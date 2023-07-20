@@ -14,11 +14,13 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.ufm.library.ufmlibrary.entity.key.LocationBookKey;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class LocationBook {

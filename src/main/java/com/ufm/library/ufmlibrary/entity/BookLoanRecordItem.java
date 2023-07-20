@@ -9,11 +9,13 @@ import javax.persistence.MapsId;
 import com.ufm.library.ufmlibrary.entity.key.BookLoanRecordItemKey;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class BookLoanRecordItem {
