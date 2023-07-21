@@ -9,11 +9,14 @@ import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.ufm.library.entity.listener.BookListener;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,7 +28,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
+@EntityListeners({ AuditingEntityListener.class, BookListener.class })
 public class Book {
 
     @Id
@@ -34,6 +37,9 @@ public class Book {
 
     @Column(length = 150, nullable = false, unique = true)
     private String title;
+
+    @Column(length = 150, nullable = false, unique = true)
+    private String slug;
 
     @Column
     private Integer totalPages;
@@ -44,6 +50,8 @@ public class Book {
     @CreatedDate
     private LocalDateTime createdAt;
 
+    private Boolean isDeleted;
+
     @ManyToOne
     private Author author;
 
@@ -52,5 +60,8 @@ public class Book {
 
     @OneToMany(mappedBy = "book")
     private Collection<LocationBook> locationBooks;
+
+    @ManyToMany(mappedBy = "books")
+    private Collection<Category> categories;
 
 }

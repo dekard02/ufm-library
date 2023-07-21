@@ -67,4 +67,6 @@ public class Librarian {
     @CreatedDate
     private LocalDateTime createdAt;
 
+    private Boolean active;
+
 }

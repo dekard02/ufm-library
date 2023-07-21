@@ -3,6 +3,7 @@ package com.ufm.library.entity;
 import java.time.LocalDateTime;
 import java.util.Collection;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -44,7 +45,7 @@ public class BookLoanRecord {
     @Column(nullable = false)
     private LocalDateTime loanDate;
 
-    @OneToMany(mappedBy = "bookLoanRecord")
+    @OneToMany(mappedBy = "bookLoanRecord", cascade = CascadeType.REMOVE)
     private Collection<BookLoanRecordItem> bookLoanRecordItems;
 
 }

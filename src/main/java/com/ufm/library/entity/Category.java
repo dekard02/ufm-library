@@ -2,39 +2,30 @@ package com.ufm.library.entity;
 
 import java.util.Collection;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import javax.persistence.ManyToMany;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@Builder
 @Entity
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Author {
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 150, nullable = false)
-    private String fullname;
+    @Column(length = 40)
+    private String name;
 
-    private Integer yearOfBirth;
-
-    private Boolean isDeleted;
-
-    @JsonProperty(access = Access.WRITE_ONLY)
-    @OneToMany(mappedBy = "author")
+    @ManyToMany(cascade = CascadeType.REMOVE)
     private Collection<Book> books;
 }
