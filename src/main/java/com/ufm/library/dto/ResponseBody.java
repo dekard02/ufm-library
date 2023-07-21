@@ -1,4 +1,4 @@
-package com.ufm.library.ufmlibrary.dto;
+package com.ufm.library.dto;
 
 import java.util.LinkedHashMap;
 
