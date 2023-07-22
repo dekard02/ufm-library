@@ -19,7 +19,8 @@ public class LocationBookDto {
     @EqualsAndHashCode(callSuper = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class Response extends LocationBookDto {
-        private String location;
+        private String locationName;
+        private String address;
     }
 
     @Data

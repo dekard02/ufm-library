@@ -35,19 +35,19 @@ public class BookDto {
     public static class Response extends BookDto {
         private AuthorDto author;
         private Collection<String> photos;
-        private Collection<String> categories;
+        private Collection<CategoryDto> categories;
         private LocalDateTime createdAt;
     }
 
     @Data
     @EqualsAndHashCode(callSuper = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public static class DetailResponse extends BookDto {
+    public static class Detail extends BookDto {
         private AuthorDto author;
         private Collection<String> photos;
-        private Collection<String> categories;
+        private Collection<CategoryDto> categories;
         private LocalDateTime createdAt;
-        private Collection<LocationBookDto> locationBooks;
+        private Collection<LocationBookDto.Response> locationBooks;
     }
 
     @Data

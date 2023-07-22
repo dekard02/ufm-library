@@ -37,5 +37,7 @@ public class LibrarianDto {
     public static class CommonField {
         private Long id;
         private String fullname;
+        private String username;
+        private String phoneNumber;
     }
 }
