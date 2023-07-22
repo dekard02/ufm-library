@@ -9,8 +9,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.ufm.library.entity.key.LocationBookKey;
 
 import lombok.AllArgsConstructor;
@@ -26,7 +24,6 @@ import lombok.NoArgsConstructor;
 public class LocationBook {
 
     @EmbeddedId
-    @JsonProperty(access = Access.WRITE_ONLY)
     @Builder.Default
     private LocationBookKey locationBookKey = new LocationBookKey();
 
@@ -36,7 +33,6 @@ public class LocationBook {
     @Column(nullable = false)
     private Integer booksOnLoan;
 
-    @JsonProperty(access = Access.WRITE_ONLY)
     @ManyToOne
     @MapsId("bookId")
     private Book book;
@@ -45,7 +41,6 @@ public class LocationBook {
     @MapsId("locationId")
     private Location location;
 
-    @JsonProperty(access = Access.WRITE_ONLY)
     @OneToMany(mappedBy = "locationBook")
     private Collection<BookLoanRecordItem> bookLoanRecordItems;
 

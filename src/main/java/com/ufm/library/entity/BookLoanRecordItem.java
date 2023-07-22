@@ -21,7 +21,8 @@ import lombok.NoArgsConstructor;
 public class BookLoanRecordItem {
 
     @EmbeddedId
-    private BookLoanRecordItemKey bookLoanRecordItemKey;
+    @Builder.Default
+    private BookLoanRecordItemKey bookLoanRecordItemKey = new BookLoanRecordItemKey();
 
     @Column(nullable = false)
     private Integer quantity;

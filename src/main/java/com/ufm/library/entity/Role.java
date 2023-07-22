@@ -10,9 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,7 +28,6 @@ public class Role {
     @Column(nullable = false)
     private RoleName role;
 
-    @JsonProperty(access = Access.WRITE_ONLY)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "role")
     private Collection<Librarian> librarians;
 

@@ -9,9 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,7 +31,11 @@ public class Location {
     @Column(nullable = false, length = 150)
     private String address;
 
-    @JsonProperty(access = Access.WRITE_ONLY)
+    @Column(columnDefinition = "char(15)")
+    private String phoneNumber;
+
+    private Boolean isDeleted;
+
     @OneToMany(mappedBy = "location")
     private Collection<LocationBook> locationBooks;
 

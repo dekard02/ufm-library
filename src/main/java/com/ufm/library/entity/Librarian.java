@@ -15,9 +15,6 @@ import javax.persistence.OneToMany;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -56,11 +53,9 @@ public class Librarian {
     @ManyToOne
     private Role role;
 
-    @JsonProperty(access = Access.WRITE_ONLY)
     @OneToMany(mappedBy = "librarian")
     private Collection<BookLoanRecord> bookLoanRecords;
 
-    @JsonProperty(access = Access.WRITE_ONLY)
     @OneToMany(mappedBy = "librarian")
     private Collection<BookReturnRecord> bookReturnRecords;
 

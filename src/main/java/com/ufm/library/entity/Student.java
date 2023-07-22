@@ -12,9 +12,6 @@ import javax.persistence.OneToMany;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -43,13 +40,15 @@ public class Student {
     @Column(columnDefinition = "char(60)", nullable = false)
     private String password;
 
+    @Column(length = 150)
+    private String email;
+
     private String photo;
 
     private LocalDateTime dateOfBirth;
 
     private Boolean gender;
 
-    @JsonProperty(access = Access.WRITE_ONLY)
     @OneToMany(mappedBy = "student")
     private Collection<BookLoanRecord> bookLoanRecords;
 
