@@ -1,7 +1,7 @@
 package com.ufm.library.entity;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -56,12 +56,12 @@ public class Book {
     private Author author;
 
     @OneToMany(mappedBy = "book")
-    private Collection<BookPhoto> photos;
+    private List<BookPhoto> photos;
 
     @OneToMany(mappedBy = "book")
-    private Collection<LocationBook> locationBooks;
+    private List<LocationBook> locationBooks;
 
     @ManyToMany(mappedBy = "books")
-    private Collection<Category> categories;
+    private List<Category> categories;
 
 }

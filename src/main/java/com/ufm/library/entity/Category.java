@@ -1,6 +1,6 @@
 package com.ufm.library.entity;
 
-import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -27,5 +27,5 @@ public class Category {
     private String name;
 
     @ManyToMany(cascade = CascadeType.REMOVE)
-    private Collection<Book> books;
+    private List<Book> books;
 }

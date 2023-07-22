@@ -1,7 +1,7 @@
 package com.ufm.library.entity;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -50,7 +50,7 @@ public class Student {
     private Boolean gender;
 
     @OneToMany(mappedBy = "student")
-    private Collection<BookLoanRecord> bookLoanRecords;
+    private List<BookLoanRecord> bookLoanRecords;
 
     @CreatedDate
     private LocalDateTime createdAt;

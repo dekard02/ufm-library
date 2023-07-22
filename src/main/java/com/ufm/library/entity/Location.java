@@ -1,6 +1,6 @@
 package com.ufm.library.entity;
 
-import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -37,6 +37,6 @@ public class Location {
     private Boolean isDeleted;
 
     @OneToMany(mappedBy = "location")
-    private Collection<LocationBook> locationBooks;
+    private List<LocationBook> locationBooks;
 
 }

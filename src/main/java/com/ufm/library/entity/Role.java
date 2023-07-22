@@ -1,6 +1,6 @@
 package com.ufm.library.entity;
 
-import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,10 +26,10 @@ public class Role {
     private Long id;
 
     @Column(nullable = false)
-    private RoleName role;
+    private RoleName roleName;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "role")
-    private Collection<Librarian> librarians;
+    private List<Librarian> librarians;
 
     public static enum RoleName {
         MANAGER {

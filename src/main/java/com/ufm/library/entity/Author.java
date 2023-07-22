@@ -1,6 +1,6 @@
 package com.ufm.library.entity;
 
-import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,5 +32,5 @@ public class Author {
     private Boolean isDeleted;
 
     @OneToMany(mappedBy = "author")
-    private Collection<Book> books;
+    private List<Book> books;
 }

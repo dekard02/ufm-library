@@ -1,6 +1,6 @@
 package com.ufm.library.entity;
 
-import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -42,6 +42,6 @@ public class LocationBook {
     private Location location;
 
     @OneToMany(mappedBy = "locationBook")
-    private Collection<BookLoanRecordItem> bookLoanRecordItems;
+    private List<BookLoanRecordItem> bookLoanRecordItems;
 
 }
