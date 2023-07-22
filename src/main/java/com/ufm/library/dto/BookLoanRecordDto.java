@@ -1,7 +1,7 @@
 package com.ufm.library.dto;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -22,7 +22,7 @@ public class BookLoanRecordDto {
     @EqualsAndHashCode(callSuper = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class Response extends BookLoanRecordDto {
-        private Long libraianId;
+        private Long librarianId;
 
         private String librarianName;
 
@@ -30,11 +30,13 @@ public class BookLoanRecordDto {
 
         private String studentName;
 
-        private String location;
+        private String address;
+
+        private String locationName;
 
         private LocalDateTime loanDate;
 
-        private Collection<BookLoanRecordItemDto.Response> books;
+        private List<BookLoanRecordItemDto.Response> books;
     }
 
     @Data
@@ -45,11 +47,13 @@ public class BookLoanRecordDto {
 
         private StudentDto.CommonField student;
 
-        private LocationDto location;
+        private String locationName;
+
+        private String address;
 
         private LocalDateTime loanDate;
 
-        private Collection<BookLoanRecordItemDto.Response> books;
+        private List<BookLoanRecordItemDto.Response> books;
     }
 
     @Data
@@ -58,8 +62,8 @@ public class BookLoanRecordDto {
     public static class Request extends BookLoanRecordDto {
         private Long librarian;
 
-        private Long student;
+        private String student;
 
-        private Collection<BookLoanRecordItemDto.Request> books;
+        private List<BookLoanRecordItemDto.Request> books;
     }
 }

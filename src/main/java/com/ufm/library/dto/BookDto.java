@@ -1,7 +1,7 @@
 package com.ufm.library.dto;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
+import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,8 +34,8 @@ public class BookDto {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class Response extends BookDto {
         private AuthorDto author;
-        private Collection<String> photos;
-        private Collection<CategoryDto> categories;
+        private List<String> photos;
+        private List<CategoryDto> categories;
         private LocalDateTime createdAt;
     }
 
@@ -44,10 +44,10 @@ public class BookDto {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class Detail extends BookDto {
         private AuthorDto author;
-        private Collection<String> photos;
-        private Collection<CategoryDto> categories;
+        private List<String> photos;
+        private List<CategoryDto> categories;
         private LocalDateTime createdAt;
-        private Collection<LocationBookDto.Response> locationBooks;
+        private List<LocationBookDto.Response> locationBooks;
     }
 
     @Data
@@ -56,8 +56,8 @@ public class BookDto {
     public static class CreateRequest extends BookDto {
         private Long author;
         // not null
-        private Collection<MultipartFile> photos;
-        private Collection<Long> categories;
+        private List<MultipartFile> photos;
+        private List<Long> categories;
     }
 
     @Data
@@ -65,8 +65,8 @@ public class BookDto {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class UpdateRequest extends BookDto {
         private Long author;
-        private Collection<MultipartFile> photos;
-        private Collection<Long> categories;
+        private List<MultipartFile> photos;
+        private List<Long> categories;
     }
 
 }
