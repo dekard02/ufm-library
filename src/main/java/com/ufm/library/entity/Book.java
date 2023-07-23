@@ -61,7 +61,7 @@ public class Book {
     @OneToMany(mappedBy = "book")
     private List<LocationBook> locationBooks;
 
-    @ManyToMany(mappedBy = "books")
+    @ManyToMany
     private List<Category> categories;
 
 }
