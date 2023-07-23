@@ -7,7 +7,7 @@ import java.util.Map;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
-import com.ufm.library.dto.ResponseBody;
+import com.ufm.library.dto.api.ResponseBody;
 
 import lombok.AllArgsConstructor;
 
