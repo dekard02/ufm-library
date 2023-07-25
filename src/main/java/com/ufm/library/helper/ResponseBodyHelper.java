@@ -17,7 +17,7 @@ public class ResponseBodyHelper {
 
     public ResponseBody success(String fieldName, Object value) {
         return ResponseBody.create()
-                .addField("message", "success")
+                .addField("status", "success")
                 .addField(fieldName, value);
     }
 
