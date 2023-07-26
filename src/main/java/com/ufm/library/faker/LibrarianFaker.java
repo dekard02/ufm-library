@@ -46,7 +46,7 @@ public class LibrarianFaker {
                     .username(username)
                     .password(password)
                     .citizenId(citezenId)
-                    .photo(StorageContants.DEFAULT_AVARTA)
+                    .photo(StorageContants.LIBRARIAN_DEFAULT_IMAGE)
                     .dateOfBirth(dateOfBirth)
                     .phoneNumber(faker.phoneNumber().cellPhone())
                     .role(role)

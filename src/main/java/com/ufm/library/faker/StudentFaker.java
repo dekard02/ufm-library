@@ -63,7 +63,7 @@ public class StudentFaker {
                     .address(STUDENT_ADDRESS.get(i))
                     .phoneNumber(faker.phoneNumber().cellPhone())
                     .password(password)
-                    .photo(StorageContants.STUDENT_IMAGES_FOLDER + StorageContants.DEFAULT_AVARTA)
+                    .photo(StorageContants.STUDENT_DEFAULT_IMAGE)
                     .dateOfBirth(dateOfBirth)
                     .gender(faker.bool().bool())
                     .build();
