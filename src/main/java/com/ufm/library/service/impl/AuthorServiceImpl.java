@@ -29,7 +29,7 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public ResponseBody getAllAuthors(Predicate predicate, Pageable pageable, String search) {
         var searchPredicate = QAuthor.author.fullname
-                .contains(search)
+                .containsIgnoreCase(search)
                 .and(predicate);
         var authorPage = authorRepo.findAll(searchPredicate, pageable);
         var authors = authorPage.getContent()
@@ -71,9 +71,12 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public void deleteAuthor(Long id) {
-        authorRepo.findById(id)
-                .ifPresentOrElse(authorRepo::delete,
-                        () -> new ApplicationException("Không tìm thấy tác giả",
-                                HttpStatus.NOT_FOUND));
+        authorRepo.findById(id).ifPresentOrElse(
+                (author) -> {
+                    author.setIsDeleted(true);
+                    authorRepo.save(author);
+                },
+                () -> new ApplicationException("Không tìm thấy tác giả",
+                        HttpStatus.NOT_FOUND));
     }
 }

@@ -10,9 +10,9 @@ import com.ufm.library.entity.Author;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING, builder = @Builder(disableBuilder = true))
 public interface AuthorMapper {
-    @Mapping(target = "id", ignore = true)
     AuthorDto authorToAuthorDto(Author author);
 
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "books", ignore = true)
     Author authorDtoToAuthor(AuthorDto authorDto);
 }
