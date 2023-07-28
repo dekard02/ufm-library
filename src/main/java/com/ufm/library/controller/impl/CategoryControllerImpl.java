@@ -1,9 +1,5 @@
 package com.ufm.library.controller.impl;
 
-import static org.springframework.http.ResponseEntity.noContent;
-import static org.springframework.http.ResponseEntity.ok;
-import static org.springframework.http.ResponseEntity.status;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.data.web.PageableDefault;
@@ -42,21 +38,22 @@ public class CategoryControllerImpl implements CategoryController {
             @PageableDefault Pageable pageable,
             @RequestParam(defaultValue = "", required = false) String search) {
         var response = categoryService.getAllCategories(predicate, pageable, search);
-        return ok(response);
+        return ResponseEntity.ok(response);
     }
 
     @Override
     @GetMapping("{id}")
     public ResponseEntity<ResponseBody> getCategory(@PathVariable Long id) {
         var response = categoryService.getCategory(id);
-        return ok(response);
+        return ResponseEntity.ok(response);
     }
 
     @Override
     @PostMapping
     public ResponseEntity<ResponseBody> createCategory(@RequestBody CategoryDto categoryDto) {
         var response = categoryService.saveCategory(categoryDto);
-        return status(HttpStatus.CREATED)
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
                 .body(response);
     }
 
@@ -65,14 +62,16 @@ public class CategoryControllerImpl implements CategoryController {
     public ResponseEntity<ResponseBody> updateCategory(@PathVariable Long id,
             @RequestBody CategoryDto categoryDto) {
         var response = categoryService.updateCategory(id, categoryDto);
-        return ok(response);
+        return ResponseEntity.ok(response);
     }
 
     @Override
     @DeleteMapping("{id}")
     public ResponseEntity<ResponseBody> deleteCategory(@PathVariable Long id) {
         categoryService.deleteCategory(id);
-        return noContent().build();
+        return ResponseEntity
+                .noContent()
+                .build();
     }
 
 }
