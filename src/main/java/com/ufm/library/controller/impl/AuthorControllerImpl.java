@@ -1,9 +1,5 @@
 package com.ufm.library.controller.impl;
 
-import static org.springframework.http.ResponseEntity.noContent;
-import static org.springframework.http.ResponseEntity.ok;
-import static org.springframework.http.ResponseEntity.status;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.data.web.PageableDefault;
@@ -42,21 +38,22 @@ public class AuthorControllerImpl implements AuthorController {
             @PageableDefault Pageable pageable,
             @RequestParam(defaultValue = "", required = false) String search) {
         var response = authorService.getAllAuthors(predicate, pageable, search);
-        return ok(response);
+        return ResponseEntity.ok(response);
     }
 
     @Override
     @GetMapping("{id}")
     public ResponseEntity<ResponseBody> getAuthor(@PathVariable Long id) {
         var response = authorService.getAuthor(id);
-        return ok(response);
+        return ResponseEntity.ok(response);
     }
 
     @Override
     @PostMapping
     public ResponseEntity<ResponseBody> createAuthor(@RequestBody AuthorDto authorDto) {
         var response = authorService.saveAuthor(authorDto);
-        return status(HttpStatus.CREATED)
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
                 .body(response);
     }
 
@@ -65,14 +62,16 @@ public class AuthorControllerImpl implements AuthorController {
     public ResponseEntity<ResponseBody> updateAuthor(@PathVariable Long id,
             @RequestBody AuthorDto authorDto) {
         var response = authorService.updateAuthor(id, authorDto);
-        return ok(response);
+        return ResponseEntity.ok(response);
     }
 
     @Override
     @DeleteMapping("{id}")
     public ResponseEntity<ResponseBody> deleteAuthor(@PathVariable Long id) {
         authorService.deleteAuthor(id);
-        return noContent().build();
+        return ResponseEntity
+                .noContent()
+                .build();
     }
 
 }
