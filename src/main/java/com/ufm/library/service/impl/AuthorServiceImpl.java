@@ -44,7 +44,7 @@ public class AuthorServiceImpl implements AuthorService {
         var authorDto = authorRepo.findById(id)
                 .map(authorMapper::authorToAuthorDto)
                 .orElseThrow(() -> new ApplicationException(
-                        "Không tìm thấy tác giả", HttpStatus.NOT_FOUND));
+                        "Không tìm thấy tác giả với mã " + id, HttpStatus.NOT_FOUND));
         return responseBodyHelper.success("author", authorDto);
     }
 
@@ -60,7 +60,7 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public ResponseBody updateAuthor(Long id, AuthorDto authorDto) {
         if (!authorRepo.existsById(id)) {
-            new ApplicationException("Không tìm thấy tác giả", HttpStatus.NOT_FOUND);
+            new ApplicationException("Không tìm thấy tác giả với mã " + id, HttpStatus.NOT_FOUND);
         }
         var author = authorMapper.authorDtoToAuthor(authorDto);
         author.setId(id);
@@ -76,7 +76,7 @@ public class AuthorServiceImpl implements AuthorService {
                     author.setIsDeleted(true);
                     authorRepo.save(author);
                 },
-                () -> new ApplicationException("Không tìm thấy tác giả",
+                () -> new ApplicationException("Không tìm thấy tác giả với mã " + id,
                         HttpStatus.NOT_FOUND));
     }
 }
