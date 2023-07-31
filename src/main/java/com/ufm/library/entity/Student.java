@@ -49,6 +49,8 @@ public class Student {
 
     private Boolean gender;
 
+    private Boolean isDeleted;
+
     @OneToMany(mappedBy = "student")
     private List<BookLoanRecord> bookLoanRecords;
 
