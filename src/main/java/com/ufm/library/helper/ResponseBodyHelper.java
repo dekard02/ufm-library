@@ -1,6 +1,6 @@
 package com.ufm.library.helper;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,8 +39,8 @@ public class ResponseBodyHelper {
     }
 
     public ResponseBody page(Page<?> page, String fieldName, List<?> list) {
-        var pageInfo = new HashMap<>();
-        pageInfo.put("pageNumber", page.getNumber());
+        var pageInfo = new LinkedHashMap<String, Object>();
+        pageInfo.put("pageNumber", page.getNumber() + 1);
         pageInfo.put("pageSize", page.getSize());
         pageInfo.put("totalPages", page.getTotalPages());
         pageInfo.put("totalItems", page.getTotalElements());
