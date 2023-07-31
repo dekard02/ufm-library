@@ -25,6 +25,8 @@ public class StudentDto {
 
     private Boolean gender;
 
+    private Boolean isDeleted;
+
     @Data
     @EqualsAndHashCode(callSuper = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)

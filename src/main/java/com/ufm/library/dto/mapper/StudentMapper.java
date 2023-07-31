@@ -11,14 +11,14 @@ import com.ufm.library.entity.Student;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING, builder = @Builder(disableBuilder = true))
 public interface StudentMapper {
 
-    StudentDto.Response studentToStudentResDto(Student reader);
+    StudentDto.Response studentToStudentResDto(Student student);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "photo", ignore = true)
     @Mapping(target = "password", ignore = true)
     @Mapping(target = "bookLoanRecords", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
-    Student studentReqDtoToStudent(StudentDto.Request readerDto);
+    Student studentReqDtoToStudent(StudentDto.Request studentDto);
 
-    StudentDto.CommonField studentToStudentCommonFieldDto(Student librarian);
+    StudentDto.CommonField studentToStudentCommonFieldDto(Student student);
 }

@@ -34,7 +34,9 @@ public interface BookMapper {
     @Mapping(target = "photos", ignore = true)
     @Mapping(target = "locationBooks", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
-    Book bookCreateReqDtoToBook(BookDto.CreateRequest bookCreateRequestDto);
+    Book bookCreateReqDtoToBook(BookDto.CreateRequest bookCreateRequestDto,
+            @Context CategoryRepository categoryRepo,
+            @Context AuthorRepository authorRepo);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "author", ignore = true)

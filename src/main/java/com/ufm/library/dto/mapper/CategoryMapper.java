@@ -11,8 +11,8 @@ import com.ufm.library.entity.Category;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING, builder = @Builder(disableBuilder = true))
 public interface CategoryMapper {
 
+    @Mapping(target = "id", ignore = true)
     Category categoryDtoToCategory(CategoryDto categoryDto);
 
-    @Mapping(target = "id", ignore = true)
     CategoryDto categoryToCategoryDto(Category category);
 }
