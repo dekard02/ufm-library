@@ -1,18 +1,12 @@
-package com.ufm.library;
+package com.ufm.library.config;
 
-import java.util.Locale;
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-import org.springframework.data.web.config.EnableSpringDataWebSupport;
-import org.springframework.data.web.config.PageableHandlerMethodArgumentResolverCustomizer;
 
-import com.github.javafaker.Faker;
-import com.github.slugify.Slugify;
 import com.ufm.library.entity.Location;
 import com.ufm.library.entity.Role;
 import com.ufm.library.faker.DataFaker;
@@ -20,10 +14,7 @@ import com.ufm.library.repository.LocationRepository;
 import com.ufm.library.repository.RoleRepository;
 
 @Configuration
-@EnableJpaAuditing
-@EnableSpringDataWebSupport
-public class ApplicationConfig {
-    
+public class FakeDataConfig {
     @Autowired
     private LocationRepository locationRepository;
 
@@ -32,24 +23,6 @@ public class ApplicationConfig {
 
     @Autowired
     private DataFaker dataFaker;
-
-    // spring.data.web.pageable.one-indexed-parameters=true dosent work
-    @Bean
-    public PageableHandlerMethodArgumentResolverCustomizer pageableResolverCustomizer() {
-        return pageableResolver -> pageableResolver.setOneIndexedParameters(true);
-    }
-
-    @Bean
-    public Faker faker() {
-        return new Faker(new Locale("vi"));
-    }
-
-    @Bean
-    public Slugify slugify() {
-        return Slugify.builder()
-                .locale(new Locale("vi"))
-                .build();
-    }
 
     @Bean
     public CommandLineRunner commandLineRunner() {
@@ -86,5 +59,4 @@ public class ApplicationConfig {
         };
         // return args -> {};
     }
-
 }
