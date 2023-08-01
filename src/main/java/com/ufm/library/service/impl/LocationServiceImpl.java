@@ -78,7 +78,9 @@ public class LocationServiceImpl implements LocationService {
                     location.setIsDeleted(true);
                     locationRepo.save(location);
                 },
-                () -> new ApplicationException("Không tìm thấy cơ sở với mã " + id,
-                        HttpStatus.NOT_FOUND));
+                () -> {
+                    throw new ApplicationException("Không tìm thấy cơ sở với mã " + id,
+                            HttpStatus.NOT_FOUND);
+                });
     }
 }
