@@ -1,6 +1,5 @@
 package com.ufm.library.security;
 
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
@@ -22,13 +21,13 @@ public class UserService implements UserDetailsService {
         var optionalLibrarian = librarianRepo.findByUsername(username);
 
         if (optionalLibrarian.isPresent()) {
-            return new UserDetail(optionalLibrarian.get());
+            return new UserDetails(optionalLibrarian.get());
         } else {
             var optionalStudent = studentRepo.findById(username);
             if (optionalStudent.isEmpty()) {
                 throw new UsernameNotFoundException("Tài khoản không hợp lệ!");
             }
-            return new UserDetail(optionalStudent.get());
+            return new UserDetails(optionalStudent.get());
         }
     }
 

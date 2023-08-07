@@ -37,7 +37,8 @@ public class JwtFilter extends OncePerRequestFilter {
 
         var jwt = bearerToken.split(" ")[1];
 
-        var username = jwtService.getSubject(jwt);
+        var jwtDecoded = jwtService.verifyAndDecode(jwt);
+        var username = jwtDecoded.getSubject();
         UserDetails userDetail = userService.loadUserByUsername(username);
         var authentication = new UsernamePasswordAuthenticationToken(
                 userDetail,

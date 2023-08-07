@@ -5,7 +5,6 @@ import java.util.Collection;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import com.ufm.library.entity.Librarian;
 import com.ufm.library.entity.Student;
@@ -13,14 +12,15 @@ import com.ufm.library.entity.Student;
 import lombok.Data;
 
 @Data
-public class UserDetail implements UserDetails {
+public class UserDetails
+        implements org.springframework.security.core.userdetails.UserDetails {
 
     private String username;
     private String password;
     private Object profile;
     private Collection<SimpleGrantedAuthority> grantedAuthorities;
 
-    public UserDetail(Librarian librarian) {
+    public UserDetails(Librarian librarian) {
         this.username = librarian.getUsername();
         this.password = librarian.getPassword();
         this.grantedAuthorities = new ArrayList<>();
@@ -29,7 +29,7 @@ public class UserDetail implements UserDetails {
         this.profile = librarian;
     }
 
-    public UserDetail(Student student) {
+    public UserDetails(Student student) {
         this.username = student.getId();
         this.password = student.getPassword();
         this.grantedAuthorities = new ArrayList<>();
