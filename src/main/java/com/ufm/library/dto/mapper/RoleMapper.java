@@ -17,5 +17,6 @@ public interface RoleMapper {
     @Mapping(source = "code", target = "roleCode")
     @Mapping(source = "name", target = "roleName")
     @Mapping(target = "librarians", ignore = true)
+    @Mapping(target = "id", ignore = true)
     public Role roleDtoToRole(RoleDto roleDto);
 }

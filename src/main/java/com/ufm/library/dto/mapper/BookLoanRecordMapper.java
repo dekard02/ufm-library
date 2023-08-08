@@ -17,7 +17,8 @@ import com.ufm.library.repository.StudentRepository;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING, builder = @Builder(disableBuilder = true), uses = {
         BookLoanRecordItemMapper.class,
         StudentMapper.class,
-        LibrarianMapper.class })
+        LibrarianMapper.class,
+        BookReturnRecordMapper.class })
 
 public interface BookLoanRecordMapper {
 
@@ -25,6 +26,7 @@ public interface BookLoanRecordMapper {
     @Mapping(target = "student", ignore = true)
     @Mapping(target = "librarian", ignore = true)
     @Mapping(target = "loanDate", ignore = true)
+    @Mapping(target = "bookReturnRecord", ignore = true)
     @Mapping(target = "bookLoanRecordItems", source = "books")
     BookLoanRecord bookLoanRecordReqDtoToBookLoanRecord(
             BookLoanRecordDto.Request bookLoanRecordDto,

@@ -11,6 +11,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ufm.library.dto.BookDto;
 import com.ufm.library.entity.Book;
@@ -52,7 +53,13 @@ public interface BookMapper {
     default List<String> photoList(List<BookPhoto> photos) {
         return photos
                 .stream()
-                .map(BookPhoto::getDirectory)
+                .map((photo) -> {
+                    var rootUrl = ServletUriComponentsBuilder
+                            .fromCurrentContextPath()
+                            .build()
+                            .toUriString();
+                    return rootUrl + "/" + photo.getDirectory();
+                })
                 .collect(Collectors.toList());
     }
 

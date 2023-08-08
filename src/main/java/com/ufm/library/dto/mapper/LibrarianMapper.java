@@ -18,8 +18,6 @@ import com.ufm.library.repository.RoleRepository;
 public interface LibrarianMapper {
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "bookLoanRecords", ignore = true)
-    @Mapping(target = "bookReturnRecords", ignore = true)
     @Mapping(target = "password", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "photo", ignore = true)
