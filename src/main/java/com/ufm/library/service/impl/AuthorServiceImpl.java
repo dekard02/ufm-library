@@ -76,7 +76,9 @@ public class AuthorServiceImpl implements AuthorService {
                     author.setIsDeleted(true);
                     authorRepo.save(author);
                 },
-                () -> new ApplicationException("Không tìm thấy tác giả với mã " + id,
-                        HttpStatus.NOT_FOUND));
+                () -> {
+                    throw new ApplicationException("Không tìm thấy tác giả với mã " + id,
+                            HttpStatus.NOT_FOUND);
+                });
     }
 }

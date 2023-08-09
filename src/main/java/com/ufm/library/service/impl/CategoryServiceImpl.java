@@ -76,7 +76,9 @@ public class CategoryServiceImpl implements CategoryService {
                     category.setIsDeleted(true);
                     categoryRepo.save(category);
                 },
-                () -> new ApplicationException("Không tìm thấy loại sách với mã " + id,
-                        HttpStatus.NOT_FOUND));
+                () -> {
+                    throw new ApplicationException("Không tìm thấy loại sách với mã " + id,
+                            HttpStatus.NOT_FOUND);
+                });
     }
 }
