@@ -3,8 +3,6 @@ package com.ufm.library.dto;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,7 +18,6 @@ public class BookLoanRecordDto {
 
     @Data
     @EqualsAndHashCode(callSuper = true)
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class Response extends BookLoanRecordDto {
         private Long librarianId;
 
@@ -37,11 +34,12 @@ public class BookLoanRecordDto {
         private LocalDateTime loanDate;
 
         private List<BookLoanRecordItemDto.Response> books;
+
+        private BookReturnRecordDto.InLoanRecord bookReturnRecord;
     }
 
     @Data
     @EqualsAndHashCode(callSuper = true)
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class DetailResponse extends BookLoanRecordDto {
         private LibrarianDto.CommonField librarian;
 
@@ -54,11 +52,12 @@ public class BookLoanRecordDto {
         private LocalDateTime loanDate;
 
         private List<BookLoanRecordItemDto.Response> books;
+
+        private BookReturnRecordDto.InLoanRecord bookReturnRecord;
     }
 
     @Data
     @EqualsAndHashCode(callSuper = true)
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class Request extends BookLoanRecordDto {
         private Long librarian;
 

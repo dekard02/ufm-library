@@ -11,7 +11,7 @@ import org.mapstruct.Named;
 
 import com.ufm.library.dto.BookLoanRecordDto;
 import com.ufm.library.entity.BookLoanRecord;
-import com.ufm.library.repository.LibrarianRepository;
+import com.ufm.library.entity.Librarian;
 import com.ufm.library.repository.StudentRepository;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING, builder = @Builder(disableBuilder = true), uses = {
@@ -27,10 +27,11 @@ public interface BookLoanRecordMapper {
     @Mapping(target = "librarian", ignore = true)
     @Mapping(target = "loanDate", ignore = true)
     @Mapping(target = "bookReturnRecord", ignore = true)
-    @Mapping(target = "bookLoanRecordItems", source = "books")
+    // @Mapping(target = "bookLoanRecordItems", source = "books")
+    @Mapping(target = "bookLoanRecordItems", ignore = true)
     BookLoanRecord bookLoanRecordReqDtoToBookLoanRecord(
             BookLoanRecordDto.Request bookLoanRecordDto,
-            @Context LibrarianRepository librarianRepo,
+            @Context Librarian librarian,
             @Context StudentRepository studentRepo);
 
     @Mapping(target = "books", source = "bookLoanRecordItems")
@@ -45,14 +46,13 @@ public interface BookLoanRecordMapper {
     @Mapping(target = "books", source = "bookLoanRecordItems")
     @Mapping(target = "locationName", source = "bookLoanRecord", qualifiedByName = "locationName")
     @Mapping(target = "address", source = "bookLoanRecord", qualifiedByName = "address")
-    BookLoanRecordDto.DetailResponse bookLoanRecordTobookLoanRecordDetailDto(BookLoanRecord bookLoanRecord);
+    BookLoanRecordDto.DetailResponse bookLoanRecordToDetailDto(BookLoanRecord bookLoanRecord);
 
     @AfterMapping
     default void toBookLoanRecord(@MappingTarget BookLoanRecord bookLoanRecord,
             BookLoanRecordDto.Request source,
-            @Context LibrarianRepository librarianRepo,
+            @Context Librarian librarian,
             @Context StudentRepository studentRepo) {
-        var librarian = librarianRepo.getReferenceById(source.getLibrarian());
         bookLoanRecord.setLibrarian(librarian);
         var student = studentRepo.getReferenceById(source.getStudent());
         bookLoanRecord.setStudent(student);

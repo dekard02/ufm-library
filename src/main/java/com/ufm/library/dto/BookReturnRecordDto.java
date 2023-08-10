@@ -20,7 +20,16 @@ public class BookReturnRecordDto {
     @Data
     @EqualsAndHashCode(callSuper = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public static class Response extends LibrarianDto {
+    public static class InLoanRecord extends BookReturnRecordDto {
+        private Long librarianId;
+
+        private String librarianName;
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = true)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public static class DetailResponse extends BookReturnRecordDto {
         private LibrarianDto.CommonField librarian;
 
         private Long bookLoanRecordId;
@@ -29,7 +38,7 @@ public class BookReturnRecordDto {
     @Data
     @EqualsAndHashCode(callSuper = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public static class Request extends LibrarianDto {
+    public static class Request extends BookReturnRecordDto {
         private Long librarian;
 
         private Long bookLoanRecord;
