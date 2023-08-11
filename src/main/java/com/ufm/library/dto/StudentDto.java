@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 public class StudentDto {
-    private Long id;
+    private String id;
 
     private String fullname;
 
@@ -44,7 +44,7 @@ public class StudentDto {
 
     @Data
     public static class CommonField {
-        private Long id;
+        private String id;
         private String fullname;
         private String address;
         private String email;

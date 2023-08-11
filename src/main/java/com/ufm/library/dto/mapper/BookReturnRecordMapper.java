@@ -26,6 +26,7 @@ public interface BookReturnRecordMapper {
 
     @Mapping(target = "librarianId", source = "librarian.id")
     @Mapping(target = "librarianName", source = "librarian.fullname")
+    @Mapping(target = "bookLoanRecordId", source = "bookLoanRecord.id")
     BookReturnRecordDto.InLoanRecord bookReturnRecordToResDto(BookReturnRecord bookReturnRecord);
 
     @Mapping(target = "bookLoanRecordId", source = "bookLoanRecord.id")

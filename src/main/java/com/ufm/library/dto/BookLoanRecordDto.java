@@ -23,7 +23,7 @@ public class BookLoanRecordDto {
 
         private String librarianName;
 
-        private Long studentId;
+        private String studentId;
 
         private String studentName;
 
@@ -59,8 +59,6 @@ public class BookLoanRecordDto {
     @Data
     @EqualsAndHashCode(callSuper = true)
     public static class Request extends BookLoanRecordDto {
-        private Long librarian;
-
         private String student;
 
         private List<BookLoanRecordItemDto.Request> books;

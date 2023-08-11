@@ -11,8 +11,6 @@ import lombok.EqualsAndHashCode;
 public class BookReturnRecordDto {
     private Long id;
 
-    private LocalDateTime returnDate;
-
     private Double fine;
 
     private String note;
@@ -21,9 +19,13 @@ public class BookReturnRecordDto {
     @EqualsAndHashCode(callSuper = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class InLoanRecord extends BookReturnRecordDto {
+        private LocalDateTime returnDate;
+
         private Long librarianId;
 
         private String librarianName;
+
+        private Long bookLoanRecordId;
     }
 
     @Data
@@ -33,6 +35,9 @@ public class BookReturnRecordDto {
         private LibrarianDto.CommonField librarian;
 
         private Long bookLoanRecordId;
+
+        private LocalDateTime returnDate;
+
     }
 
     @Data

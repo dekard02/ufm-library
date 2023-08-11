@@ -27,7 +27,6 @@ public interface BookLoanRecordMapper {
     @Mapping(target = "librarian", ignore = true)
     @Mapping(target = "loanDate", ignore = true)
     @Mapping(target = "bookReturnRecord", ignore = true)
-    // @Mapping(target = "bookLoanRecordItems", source = "books")
     @Mapping(target = "bookLoanRecordItems", ignore = true)
     BookLoanRecord bookLoanRecordReqDtoToBookLoanRecord(
             BookLoanRecordDto.Request bookLoanRecordDto,
@@ -56,17 +55,12 @@ public interface BookLoanRecordMapper {
         bookLoanRecord.setLibrarian(librarian);
         var student = studentRepo.getReferenceById(source.getStudent());
         bookLoanRecord.setStudent(student);
-
-        bookLoanRecord.getBookLoanRecordItems().forEach((item) -> {
-            var bookLoanRecordId = source.getId();
-            item.getBookLoanRecordItemKey().setBookLoanRecordId(bookLoanRecordId);
-        });
     }
 
     @Named("locationName")
     default String locationName(BookLoanRecord bookLoanRecord) {
         var items = bookLoanRecord.getBookLoanRecordItems();
-        return items.isEmpty()
+        return items == null
                 ? null
                 : items.get(0).getLocationBook().getLocation().getName();
     }
@@ -74,7 +68,7 @@ public interface BookLoanRecordMapper {
     @Named("address")
     default String address(BookLoanRecord bookLoanRecord) {
         var items = bookLoanRecord.getBookLoanRecordItems();
-        return items.isEmpty()
+        return items == null
                 ? null
                 : items.get(0).getLocationBook().getLocation().getAddress();
     }
