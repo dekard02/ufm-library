@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.github.javafaker.Faker;
 import com.github.slugify.Slugify;
+import com.ufm.library.constant.Constants;
 import com.ufm.library.constant.StorageContants;
 import com.ufm.library.entity.Librarian;
 import com.ufm.library.repository.LibrarianRepository;
@@ -22,6 +23,17 @@ public class LibrarianFaker {
     private final Slugify slugify;
 
     public void fake() {
+        var admin = Librarian.builder()
+                .fullname("Administrator")
+                .username("admin")
+                .password(Constants.ENCODED_DEFAULT_PASSWORD)
+                .citizenId("123123123123")
+                .photo(StorageContants.LIBRARIAN_DEFAULT_IMAGE)
+                .phoneNumber(faker.phoneNumber().cellPhone())
+                .role(roleRepository.getReferenceById(1L))
+                .build();
+        librarianRepository.save(admin);
+
         for (int i = 0; i < 10; i++) {
             var citezenId = faker.regexify("\\d{10}");
             var dateOfBirth = faker
@@ -33,8 +45,6 @@ public class LibrarianFaker {
                     + String.format("%02d", dateOfBirth.getDayOfMonth())
                     + String.format("%02d", dateOfBirth.getMonthValue());
 
-            // password = password
-            var password = "$2a$12$Cug38IrpgoVxKcS/tA6hWuS786KfEfBAa6QgrQsiaCAiryGDpsm8W";
             var role = roleRepository.getReferenceById(2L);
 
             if (i < 3) {
@@ -44,7 +54,7 @@ public class LibrarianFaker {
             var librarian = Librarian.builder()
                     .fullname(fullname)
                     .username(username)
-                    .password(password)
+                    .password(Constants.ENCODED_DEFAULT_PASSWORD)
                     .citizenId(citezenId)
                     .photo(StorageContants.LIBRARIAN_DEFAULT_IMAGE)
                     .dateOfBirth(dateOfBirth)

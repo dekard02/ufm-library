@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.github.javafaker.Faker;
+import com.ufm.library.constant.Constants;
 import com.ufm.library.constant.StorageContants;
 import com.ufm.library.entity.Student;
 import com.ufm.library.repository.StudentRepository;
@@ -47,6 +48,17 @@ public class StudentFaker {
     private final StudentRepository studentRepository;
 
     public void fake() {
+        var first = Student.builder()
+                .id("2021010175")
+                .fullname("Nguyễn Đăng Khoa")
+                .address("ấp 11, Tân Hào, Giống Trôm, Bến Tre")
+                .phoneNumber(faker.phoneNumber().cellPhone())
+                .password(Constants.ENCODED_DEFAULT_PASSWORD)
+                .photo(StorageContants.STUDENT_DEFAULT_IMAGE)
+                .gender(faker.bool().bool())
+                .build();
+        studentRepository.save(first);
+
         for (int i = 0; i < 25; i++) {
             String id = faker.regexify("(2020|2021|2022)010(\\d{3})");
             var dateOfBirth = faker
@@ -54,15 +66,12 @@ public class StudentFaker {
                     .toInstant().atZone(ZoneId.systemDefault())
                     .toLocalDateTime();
 
-            // password = password
-            var password = "$2a$12$Cug38IrpgoVxKcS/tA6hWuS786KfEfBAa6QgrQsiaCAiryGDpsm8W";
-
             var student = Student.builder()
                     .id(id)
                     .fullname(faker.name().nameWithMiddle())
                     .address(STUDENT_ADDRESS.get(i))
                     .phoneNumber(faker.phoneNumber().cellPhone())
-                    .password(password)
+                    .password(Constants.ENCODED_DEFAULT_PASSWORD)
                     .photo(StorageContants.STUDENT_DEFAULT_IMAGE)
                     .dateOfBirth(dateOfBirth)
                     .gender(faker.bool().bool())
