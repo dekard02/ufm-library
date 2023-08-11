@@ -84,7 +84,7 @@ public class LibrarianServiceImpl implements LibrarianService {
         var librarian = librarianMapper.librarianReqDtoToLibrarian(librarianDto, roleRepo);
 
         librarian.setId(null);
-        librarian.setPassword(Constants.DEFAULT_PASSWORD);
+        librarian.setPassword(Constants.ENCODED_DEFAULT_PASSWORD);
 
         if (librarianDto.getPhoto() != null) {
             saveImage(librarian, librarianDto.getPhoto());
@@ -107,7 +107,7 @@ public class LibrarianServiceImpl implements LibrarianService {
                                 HttpStatus.NOT_FOUND));
 
         var updateLibrarian = librarianMapper.librarianReqDtoToLibrarian(librarianDto, roleRepo);
-        BeanUtils.copyProperties(updateLibrarian, librarian, "password", "photo");
+        BeanUtils.copyProperties(updateLibrarian, librarian, "password", "photo", "createdAt");
         librarian.setId(id);
 
         if (librarianDto.getPhoto() != null) {

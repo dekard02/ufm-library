@@ -59,7 +59,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public ResponseBody updateCategory(Long id, CategoryDto categoryDto) {
         if (!categoryRepo.existsById(id)) {
-            new ApplicationException("Không tìm thấy loại sách với mã " + id,
+            throw new ApplicationException("Không tìm thấy loại sách với mã " + id,
                     HttpStatus.NOT_FOUND);
         }
         var category = categoryMapper.categoryDtoToCategory(categoryDto);

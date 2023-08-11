@@ -60,7 +60,8 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public ResponseBody updateAuthor(Long id, AuthorDto authorDto) {
         if (!authorRepo.existsById(id)) {
-            new ApplicationException("Không tìm thấy tác giả với mã " + id, HttpStatus.NOT_FOUND);
+            throw new ApplicationException("Không tìm thấy tác giả với mã " + id,
+                    HttpStatus.NOT_FOUND);
         }
         var author = authorMapper.authorDtoToAuthor(authorDto);
         author.setId(id);
