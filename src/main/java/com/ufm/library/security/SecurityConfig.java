@@ -12,7 +12,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.ufm.library.security.filter.ExceptionHandlerFilter;
+import com.ufm.library.security.filter.JwtFilter;
 import com.ufm.library.security.provider.UsernamePasswordAuthenticationProvider;
 
 import lombok.RequiredArgsConstructor;
@@ -23,6 +26,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    private final JwtFilter jwtFilter;
+    private final ExceptionHandlerFilter exceptionHandlerFilter;
     private final AuthenticationEntryPoint authEntryPoint;
     private final UsernamePasswordAuthenticationProvider basicAuthProvider;
 
@@ -35,6 +40,8 @@ public class SecurityConfig {
                         sessionConfig -> sessionConfig.sessionCreationPolicy(STATELESS))
                 .authorizeHttpRequests().anyRequest().permitAll()
                 .and()
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(exceptionHandlerFilter, JwtFilter.class)
                 .exceptionHandling(config -> config.authenticationEntryPoint(authEntryPoint));
         return http.build();
     }

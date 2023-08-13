@@ -32,12 +32,12 @@ public class UsernamePasswordAuthenticationProvider implements AuthenticationPro
         var userDetails = userService.loadUserByUsername(username);
 
         if (userDetails != null && passwordEncoder.matches(password, userDetails.getPassword())) {
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+            var token = new UsernamePasswordAuthenticationToken(
                     userDetails,
                     null,
                     userDetails.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            return authenticationToken;
+            SecurityContextHolder.getContext().setAuthentication(token);
+            return token;
         } else {
             throw new BadCredentialsException("Mật khẩu không hợp lệ!!");
         }
