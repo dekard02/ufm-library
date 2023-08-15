@@ -26,7 +26,16 @@ public interface LocationBookMapper {
     @Mapping(source = "locationId", target = "locationBookKey.locationId")
     @Mapping(target = "book", ignore = true)
     @Mapping(target = "location", ignore = true)
-    LocationBook locationBookDtoToLocationBook(LocationBookDto.Request locationBookReq,
+    @Mapping(target = "booksOnLoan", ignore = true)
+    LocationBook locationBookCreateReqDtoToLocationBook(LocationBookDto.CreateRequest locationBookReq,
+            @Context BookRepository bookRepo,
+            @Context LocationRepository locationRepo);
+
+    @Mapping(source = "bookId", target = "locationBookKey.bookId")
+    @Mapping(source = "locationId", target = "locationBookKey.locationId")
+    @Mapping(target = "book", ignore = true)
+    @Mapping(target = "location", ignore = true)
+    LocationBook locationBookUpdateReqDtoToLocationBook(LocationBookDto.UpdateRequest locationBookReq,
             @Context BookRepository bookRepo,
             @Context LocationRepository locationRepo);
 
@@ -35,8 +44,21 @@ public interface LocationBookMapper {
     LocationBookDto.DetailResponse locationBookToLocationBookDetailDto(LocationBook locationBook);
 
     @AfterMapping
-    default void setReference(
-            LocationBookDto.Request locationBookReq,
+    default void setReferenceCreate(
+            LocationBookDto.CreateRequest locationBookReq,
+            @MappingTarget LocationBook locationBook,
+            @Context BookRepository bookRepo,
+            @Context LocationRepository locationRepo) {
+        var book = bookRepo.getReferenceById(locationBookReq.getBookId());
+        var location = locationRepo.getReferenceById(locationBookReq.getLocationId());
+        locationBook.setBook(book);
+        locationBook.setLocation(location);
+        locationBook.setBooksOnLoan(0);
+    }
+
+    @AfterMapping
+    default void setReferenceUpdate(
+            LocationBookDto.UpdateRequest locationBookReq,
             @MappingTarget LocationBook locationBook,
             @Context BookRepository bookRepo,
             @Context LocationRepository locationRepo) {

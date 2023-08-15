@@ -18,6 +18,7 @@ import com.ufm.library.repository.BookLoanRecordRepository;
 public interface BookReturnRecordMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "librarian", ignore = true)
+    @Mapping(target = "returnDate", ignore = true)
     @Mapping(target = "bookLoanRecord", ignore = true)
     BookReturnRecord bookReturnRecordReqDtoToBookReturnRecord(
             BookReturnRecordDto.Request bookReturnRecordDto,

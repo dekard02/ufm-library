@@ -10,9 +10,9 @@ import com.ufm.library.entity.Location;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING, builder = @Builder(disableBuilder = true))
 public interface LocationMapper {
-    LocationDto locationToLocationDto(Location reader);
+    LocationDto locationToLocationDto(Location location);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "locationBooks", ignore = true)
-    Location locationDtoToLocation(LocationDto readerDto);
+    Location locationDtoToLocation(LocationDto locationDto);
 }
