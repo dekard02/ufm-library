@@ -2,7 +2,11 @@ package com.ufm.library.dto;
 
 import java.time.LocalDateTime;
 
+import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.ufm.library.entity.BookLoanRecord;
+import com.ufm.library.validation.annotation.Exist;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -44,8 +48,9 @@ public class BookReturnRecordDto {
     @EqualsAndHashCode(callSuper = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class Request extends BookReturnRecordDto {
-        private Long librarian;
 
+        @NotNull(message = "Trường bookLoanRecord không được bỏ trống")
+        @Exist(entityClass = BookLoanRecord.class, message = "Không tồn tại phiếu mượn với mã {}")
         private Long bookLoanRecord;
     }
 }
