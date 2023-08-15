@@ -1,13 +1,11 @@
 package com.ufm.library.entity;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
-import javax.persistence.OneToMany;
 
 import com.ufm.library.entity.key.LocationBookKey;
 
@@ -33,15 +31,11 @@ public class LocationBook {
     @Column(nullable = false)
     private Integer booksOnLoan;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("bookId")
     private Book book;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("locationId")
     private Location location;
-
-    @OneToMany(mappedBy = "locationBook")
-    private List<BookLoanRecordItem> bookLoanRecordItems;
-
 }

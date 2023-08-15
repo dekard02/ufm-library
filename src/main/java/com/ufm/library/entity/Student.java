@@ -1,13 +1,11 @@
 package com.ufm.library.entity;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -40,7 +38,7 @@ public class Student {
     @Column(columnDefinition = "char(60)", nullable = false)
     private String password;
 
-    @Column(length = 150)
+    @Column(length = 150, unique = true)
     private String email;
 
     private String photo;
@@ -50,9 +48,6 @@ public class Student {
     private Boolean gender;
 
     private Boolean isDeleted;
-
-    @OneToMany(mappedBy = "student")
-    private List<BookLoanRecord> bookLoanRecords;
 
     @CreatedDate
     private LocalDateTime createdAt;

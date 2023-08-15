@@ -1,6 +1,7 @@
 package com.ufm.library.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -12,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -45,7 +47,10 @@ public class BookLoanRecord {
     @Column(nullable = false)
     private LocalDateTime loanDate;
 
+    @Builder.Default
     @OneToMany(mappedBy = "bookLoanRecord", cascade = CascadeType.REMOVE)
-    private List<BookLoanRecordItem> bookLoanRecordItems;
+    private List<BookLoanRecordItem> bookLoanRecordItems = new ArrayList<BookLoanRecordItem>();
 
+    @OneToOne(mappedBy = "bookLoanRecord")
+    private BookReturnRecord bookReturnRecord;
 }

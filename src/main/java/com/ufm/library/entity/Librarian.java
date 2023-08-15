@@ -1,7 +1,6 @@
 package com.ufm.library.entity;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -52,12 +50,6 @@ public class Librarian {
 
     @ManyToOne
     private Role role;
-
-    @OneToMany(mappedBy = "librarian")
-    private List<BookLoanRecord> bookLoanRecords;
-
-    @OneToMany(mappedBy = "librarian")
-    private List<BookReturnRecord> bookReturnRecords;
 
     @CreatedDate
     private LocalDateTime createdAt;
