@@ -4,7 +4,6 @@ import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -74,7 +73,8 @@ public class BookReturnRecordServiceImpl implements BookReturnRecordService {
                             .eq(userDetails.getUsername()));
             boolean canAcess = bookLoanRecordRepo.exists(predicate);
             if (!canAcess) {
-                throw new AccessDeniedException("Bạn không có quyền xem phiếu mượn này");
+                throw new ApplicationException("Bạn không có quyền xem phiếu trả này",
+                        HttpStatus.FORBIDDEN);
             }
         }
 
@@ -99,7 +99,9 @@ public class BookReturnRecordServiceImpl implements BookReturnRecordService {
         bookLoanRecordRepo.findById(bookReturnRecordDto.getBookLoanRecord())
                 .ifPresent(record -> {
                     if (record.getBookReturnRecord() != null) {
-                        throw new ApplicationException("Phiếu mượn với mã " + record.getId() + " đã có phiếu trả",
+                        throw new ApplicationException(
+                                "Phiếu mượn với mã " + record.getId()
+                                        + " đã có phiếu trả",
                                 HttpStatus.BAD_REQUEST);
                     }
                 });
@@ -134,8 +136,11 @@ public class BookReturnRecordServiceImpl implements BookReturnRecordService {
         bookLoanRecordRepo.findById(bookReturnRecordDto.getBookLoanRecord())
                 .ifPresent(record -> {
                     if (record.getBookReturnRecord() != null
-                            && record.getId() != oldReturnRecord.getBookLoanRecord().getId()) {
-                        throw new ApplicationException("Phiếu mượn với mã " + record.getId() + " đã có phiếu trả",
+                            && record.getId() != oldReturnRecord.getBookLoanRecord()
+                                    .getId()) {
+                        throw new ApplicationException(
+                                "Phiếu mượn với mã " + record.getId()
+                                        + " đã có phiếu trả",
                                 HttpStatus.BAD_REQUEST);
                     }
                 });

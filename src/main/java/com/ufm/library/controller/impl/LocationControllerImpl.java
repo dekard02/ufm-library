@@ -5,6 +5,7 @@ import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -58,6 +59,7 @@ public class LocationControllerImpl implements LocationController {
 
     @Override
     @PutMapping("{id}")
+    @PreAuthorize("hasAnyRole('LIBRARIAN','MANAGER')")
     public ResponseEntity<ResponseBody> updateLocation(@PathVariable Long id,
             @RequestBody LocationDto locationDto) {
         var response = locationService.updateLocation(id, locationDto);
@@ -66,6 +68,7 @@ public class LocationControllerImpl implements LocationController {
 
     @Override
     @DeleteMapping("{id}")
+    @PreAuthorize("hasAnyRole('LIBRARIAN','MANAGER')")
     public ResponseEntity<ResponseBody> deleteLocation(@PathVariable Long id) {
         locationService.deleteLocation(id);
         return ResponseEntity.noContent().build();

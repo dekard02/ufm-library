@@ -5,6 +5,7 @@ import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,6 +51,7 @@ public class AuthorControllerImpl implements AuthorController {
 
     @Override
     @PostMapping
+    @PreAuthorize("hasAnyRole('LIBRARIAN','MANAGER')")
     public ResponseEntity<ResponseBody> createAuthor(@RequestBody AuthorDto authorDto) {
         var response = authorService.saveAuthor(authorDto);
         return ResponseEntity
@@ -59,6 +61,7 @@ public class AuthorControllerImpl implements AuthorController {
 
     @Override
     @PutMapping("{id}")
+    @PreAuthorize("hasAnyRole('LIBRARIAN','MANAGER')")
     public ResponseEntity<ResponseBody> updateAuthor(@PathVariable Long id,
             @RequestBody AuthorDto authorDto) {
         var response = authorService.updateAuthor(id, authorDto);
@@ -67,6 +70,7 @@ public class AuthorControllerImpl implements AuthorController {
 
     @Override
     @DeleteMapping("{id}")
+    @PreAuthorize("hasAnyRole('LIBRARIAN','MANAGER')")
     public ResponseEntity<ResponseBody> deleteAuthor(@PathVariable Long id) {
         authorService.deleteAuthor(id);
         return ResponseEntity

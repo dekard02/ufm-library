@@ -2,6 +2,7 @@ package com.ufm.library.controller.impl;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,6 +42,7 @@ public class LocationBookControllerImpl implements LocationBookController {
 
     @Override
     @PostMapping("{bookId}/locations")
+    @PreAuthorize("hasAnyRole('LIBRARIAN','MANAGER')")
     public ResponseEntity<ResponseBody> createLocationBook(@PathVariable Long bookId,
             @RequestBody LocationBookDto.CreateRequest locationBookDto) {
         var response = locationBookService.saveLocationBook(bookId, locationBookDto);
@@ -51,6 +53,7 @@ public class LocationBookControllerImpl implements LocationBookController {
 
     @Override
     @PutMapping("{bookId}/locations/{locationId}")
+    @PreAuthorize("hasAnyRole('LIBRARIAN','MANAGER')")
     public ResponseEntity<ResponseBody> updateLocationBook(@PathVariable Long bookId,
             @PathVariable Long locationId,
             @RequestBody LocationBookDto.UpdateRequest locationBookDto) {

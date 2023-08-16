@@ -52,6 +52,7 @@ public class BookReturnRecordControllerImpl implements BookReturnRecordControlle
 
     @Override
     @PostMapping
+    @PreAuthorize("hasAnyRole('LIBRARIAN','MANAGER')")
     public ResponseEntity<ResponseBody> createBookReturnRecord(
             @RequestBody BookReturnRecordDto.Request bookReturnRecordDto) {
         var response = bookReturnRecordService.saveBookReturnRecord(bookReturnRecordDto);
@@ -62,6 +63,7 @@ public class BookReturnRecordControllerImpl implements BookReturnRecordControlle
 
     @Override
     @PutMapping("{id}")
+    @PreAuthorize("hasAnyRole('LIBRARIAN','MANAGER')")
     public ResponseEntity<ResponseBody> updateBookReturnRecord(@PathVariable Long id,
             @RequestBody BookReturnRecordDto.Request bookReturnRecordDto) {
         var response = bookReturnRecordService.updateBookReturnRecord(id, bookReturnRecordDto);
@@ -70,6 +72,7 @@ public class BookReturnRecordControllerImpl implements BookReturnRecordControlle
 
     @Override
     @DeleteMapping("{id}")
+    @PreAuthorize("hasAnyRole('LIBRARIAN','MANAGER')")
     public ResponseEntity<ResponseBody> deleteBookReturnRecord(@PathVariable Long id) {
         bookReturnRecordService.deleteBookReturnRecord(id);
         return ResponseEntity

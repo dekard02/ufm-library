@@ -5,6 +5,7 @@ import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,6 +51,7 @@ public class CategoryControllerImpl implements CategoryController {
 
     @Override
     @PostMapping
+    @PreAuthorize("hasAnyRole('LIBRARIAN','MANAGER')")
     public ResponseEntity<ResponseBody> createCategory(@RequestBody CategoryDto categoryDto) {
         var response = categoryService.saveCategory(categoryDto);
         return ResponseEntity
@@ -59,6 +61,7 @@ public class CategoryControllerImpl implements CategoryController {
 
     @Override
     @PutMapping("{id}")
+    @PreAuthorize("hasAnyRole('LIBRARIAN','MANAGER')")
     public ResponseEntity<ResponseBody> updateCategory(@PathVariable Long id,
             @RequestBody CategoryDto categoryDto) {
         var response = categoryService.updateCategory(id, categoryDto);
@@ -67,6 +70,7 @@ public class CategoryControllerImpl implements CategoryController {
 
     @Override
     @DeleteMapping("{id}")
+    @PreAuthorize("hasAnyRole('LIBRARIAN','MANAGER')")
     public ResponseEntity<ResponseBody> deleteCategory(@PathVariable Long id) {
         categoryService.deleteCategory(id);
         return ResponseEntity

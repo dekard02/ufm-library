@@ -5,6 +5,7 @@ import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +25,7 @@ import com.ufm.library.service.LibrarianService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
+@PreAuthorize("hasRole('MANAGER')")
 @RequestMapping("api/v1/librarians")
 @RequiredArgsConstructor
 public class LirarianControllerImpl implements LibrarianController {

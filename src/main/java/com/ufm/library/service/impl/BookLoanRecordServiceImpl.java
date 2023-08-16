@@ -9,7 +9,6 @@ import javax.persistence.PersistenceContext;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -97,8 +96,9 @@ public class BookLoanRecordServiceImpl implements BookLoanRecordService {
                 .getAuthentication()
                 .getPrincipal();
         if (userDetails.getProfile() instanceof Student) {
-            if (bookLoanRecordDto.getStudent().getId() != userDetails.getUsername()) {
-                throw new AccessDeniedException("Bạn không có quyền xem phiếu mượn này");
+            if (!bookLoanRecordDto.getStudent().getId().equals(userDetails.getUsername())) {
+                throw new ApplicationException("Bạn không có quyền xem phiếu mượn này",
+                        HttpStatus.FORBIDDEN);
             }
         }
 
@@ -192,7 +192,8 @@ public class BookLoanRecordServiceImpl implements BookLoanRecordService {
         bookLoanRecordRepo.findById(id).ifPresentOrElse(
                 (loanRecord) -> {
                     if (loanRecord.getBookReturnRecord() != null) {
-                        throw new ApplicationException("Không thể xóa phiếu mượn đã có phiếu trả",
+                        throw new ApplicationException(
+                                "Không thể xóa phiếu mượn đã có phiếu trả",
                                 HttpStatus.BAD_REQUEST);
                     } else {
                         bookLoanRecordRepo.delete(loanRecord);
