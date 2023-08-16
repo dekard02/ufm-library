@@ -11,4 +11,6 @@ public interface JwtService {
     public DecodedJWT verifyAndDecodeAccessToken(String jwt);
 
     public DecodedJWT verifyAndDecodeRefreshToken(String jwt);
+
+    public void removeJwtFromCache(String jwt);
 }
