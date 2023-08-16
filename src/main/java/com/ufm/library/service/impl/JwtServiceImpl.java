@@ -74,23 +74,25 @@ public class JwtServiceImpl implements JwtService {
 
     @Override
     public DecodedJWT verifyAndDecodeAccessToken(String jwt) {
+        var decode = buildVerifier(ACCESS_TOKEN_TYPE)
+                .verify(jwt);
+
         if (redisTemplate.opsForValue().get(jwt) == null) {
             throw new TokenBlockedException("Token của bạn đã được đăng xuất");
         }
 
-        var decode = buildVerifier(ACCESS_TOKEN_TYPE)
-                .verify(jwt);
         return decode;
     }
 
     @Override
     public DecodedJWT verifyAndDecodeRefreshToken(String jwt) {
+        var decode = buildVerifier(REFRESH_TOKEN_TYPE)
+                .verify(jwt);
+
         if (redisTemplate.opsForValue().get(jwt) == null) {
             throw new TokenBlockedException("Token của bạn đã được đăng xuất");
         }
 
-        var decode = buildVerifier(REFRESH_TOKEN_TYPE)
-                .verify(jwt);
         return decode;
     }
 
