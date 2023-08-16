@@ -1,5 +1,7 @@
 package com.ufm.library.service;
 
+import javax.validation.Valid;
+
 import org.springframework.data.domain.Pageable;
 
 import com.querydsl.core.types.Predicate;
@@ -11,9 +13,9 @@ public interface BookService {
 
     public ResponseBody getBook(Long id);
 
-    public ResponseBody saveBook(BookDto.CreateRequest bookDto);
+    public ResponseBody saveBook(@Valid BookDto.CreateRequest bookDto);
 
-    public ResponseBody updateBook(Long id, BookDto.UpdateRequest bookDto);
+    public ResponseBody updateBook(Long id, @Valid BookDto.UpdateRequest bookDto);
 
     public void deleteBook(Long id);
 }

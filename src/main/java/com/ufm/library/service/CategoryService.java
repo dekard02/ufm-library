@@ -1,5 +1,7 @@
 package com.ufm.library.service;
 
+import javax.validation.Valid;
+
 import org.springframework.data.domain.Pageable;
 
 import com.querydsl.core.types.Predicate;
@@ -11,9 +13,9 @@ public interface CategoryService {
 
     public ResponseBody getCategory(Long id);
 
-    public ResponseBody saveCategory(CategoryDto categoryDto);
+    public ResponseBody saveCategory(@Valid CategoryDto categoryDto);
 
-    public ResponseBody updateCategory(Long id, CategoryDto categoryDto);
+    public ResponseBody updateCategory(Long id, @Valid CategoryDto categoryDto);
 
     public void deleteCategory(Long id);
 }

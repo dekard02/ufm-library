@@ -1,5 +1,7 @@
 package com.ufm.library.service;
 
+import javax.validation.Valid;
+
 import org.springframework.data.domain.Pageable;
 
 import com.querydsl.core.types.Predicate;
@@ -11,9 +13,9 @@ public interface StudentService {
 
     public ResponseBody getStudent(String id);
 
-    public ResponseBody saveStudent(StudentDto.Request studentDto);
+    public ResponseBody saveStudent(@Valid StudentDto.Request studentDto);
 
-    public ResponseBody updateStudent(String id, StudentDto.Request studentDto);
+    public ResponseBody updateStudent(String id, @Valid StudentDto.Request studentDto);
 
     public void deleteStudent(String id);
 }

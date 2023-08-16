@@ -1,5 +1,7 @@
 package com.ufm.library.service;
 
+import javax.validation.Valid;
+
 import org.springframework.data.domain.Pageable;
 
 import com.querydsl.core.types.Predicate;
@@ -11,10 +13,11 @@ public interface BookReturnRecordService {
 
     public ResponseBody getBookReturnRecord(Long id);
 
-    public ResponseBody saveBookReturnRecord(BookReturnRecordDto.Request bookReturnRecordDto);
+    public ResponseBody saveBookReturnRecord(
+            @Valid BookReturnRecordDto.Request bookReturnRecordDto);
 
     public ResponseBody updateBookReturnRecord(Long id,
-            BookReturnRecordDto.Request bookReturnRecordDto);
+            @Valid BookReturnRecordDto.Request bookReturnRecordDto);
 
     public void deleteBookReturnRecord(Long id);
 }

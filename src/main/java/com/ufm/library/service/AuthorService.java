@@ -1,5 +1,7 @@
 package com.ufm.library.service;
 
+import javax.validation.Valid;
+
 import org.springframework.data.domain.Pageable;
 
 import com.querydsl.core.types.Predicate;
@@ -11,9 +13,9 @@ public interface AuthorService {
 
     public ResponseBody getAuthor(Long id);
 
-    public ResponseBody saveAuthor(AuthorDto authorDto);
+    public ResponseBody saveAuthor(@Valid AuthorDto authorDto);
 
-    public ResponseBody updateAuthor(Long id, AuthorDto authorDto);
+    public ResponseBody updateAuthor(@Valid Long id, AuthorDto authorDto);
 
     public void deleteAuthor(Long id);
 }

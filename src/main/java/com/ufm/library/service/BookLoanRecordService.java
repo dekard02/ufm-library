@@ -1,5 +1,7 @@
 package com.ufm.library.service;
 
+import javax.validation.Valid;
+
 import org.springframework.data.domain.Pageable;
 
 import com.querydsl.core.types.Predicate;
@@ -11,10 +13,10 @@ public interface BookLoanRecordService {
 
     public ResponseBody getBookLoanRecord(Long id);
 
-    public ResponseBody saveBookLoanRecord(BookLoanRecordDto.Request bookLoanRecordDto);
+    public ResponseBody saveBookLoanRecord(@Valid BookLoanRecordDto.Request bookLoanRecordDto);
 
     public ResponseBody updateBookLoanRecord(Long id,
-            BookLoanRecordDto.Request bookLoanRecordDto);
+            @Valid BookLoanRecordDto.Request bookLoanRecordDto);
 
     public void deleteBookLoanRecord(Long id);
 }

@@ -4,6 +4,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import com.ufm.library.dto.LocationBookDto;
 import com.ufm.library.dto.api.ResponseBody;
@@ -19,6 +20,7 @@ import com.ufm.library.service.LocationBookService;
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Validated
 @RequiredArgsConstructor
 public class LocationBookServiceImpl implements LocationBookService {
 
@@ -43,7 +45,8 @@ public class LocationBookServiceImpl implements LocationBookService {
         var locationBook = locationBookRepo.findById(locationBookKey)
                 .map(locationBookMapper::locationBookToLocationBookDto)
                 .orElseThrow(
-                        () -> new ApplicationException("Không tìm thấy sách ở cơ sở với này", HttpStatus.NOT_FOUND));
+                        () -> new ApplicationException("Không tìm thấy sách ở cơ sở với này",
+                                HttpStatus.NOT_FOUND));
         return responseBodyHelper.success("locationBook", locationBook);
     }
 
@@ -55,7 +58,8 @@ public class LocationBookServiceImpl implements LocationBookService {
         var locationBookKey = new LocationBookKey(locationBookDto.getLocationId(), bookId);
         locationBookRepo.findById(locationBookKey).ifPresent(
                 (locationBook) -> {
-                    throw new ApplicationException("Thông tin sách ở cơ sở này đã tồn tại", HttpStatus.BAD_REQUEST);
+                    throw new ApplicationException("Thông tin sách ở cơ sở này đã tồn tại",
+                            HttpStatus.BAD_REQUEST);
                 });
 
         var locationBook = locationBookMapper

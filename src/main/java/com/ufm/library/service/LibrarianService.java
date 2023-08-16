@@ -1,5 +1,7 @@
 package com.ufm.library.service;
 
+import javax.validation.Valid;
+
 import org.springframework.data.domain.Pageable;
 
 import com.querydsl.core.types.Predicate;
@@ -11,9 +13,9 @@ public interface LibrarianService {
 
     public ResponseBody getLibrarian(Long id);
 
-    public ResponseBody saveLibrarian(LibrarianDto.Request librarianDto);
+    public ResponseBody saveLibrarian(@Valid LibrarianDto.Request librarianDto);
 
-    public ResponseBody updateLibrarian(Long id, LibrarianDto.Request librarianDto);
+    public ResponseBody updateLibrarian(Long id, @Valid LibrarianDto.Request librarianDto);
 
     public void deleteLibrarian(Long id);
 }

@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 import com.querydsl.core.types.Predicate;
 import com.ufm.library.dto.BookReturnRecordDto.Request;
@@ -26,6 +27,7 @@ import com.ufm.library.service.BookReturnRecordService;
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Validated
 @RequiredArgsConstructor
 public class BookReturnRecordServiceImpl implements BookReturnRecordService {
 

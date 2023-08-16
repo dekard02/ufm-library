@@ -8,6 +8,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.querydsl.core.types.Predicate;
@@ -29,6 +30,7 @@ import com.ufm.library.service.StorageService;
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Validated
 @RequiredArgsConstructor
 public class LibrarianServiceImpl implements LibrarianService {
 

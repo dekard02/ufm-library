@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import com.querydsl.core.types.Predicate;
 import com.ufm.library.dto.LocationDto;
@@ -19,6 +20,7 @@ import com.ufm.library.service.LocationService;
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Validated
 @RequiredArgsConstructor
 public class LocationServiceImpl implements LocationService {
 
