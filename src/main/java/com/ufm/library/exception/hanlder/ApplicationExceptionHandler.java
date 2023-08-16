@@ -4,13 +4,16 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.HashMap;
 import java.util.stream.Stream;
 
+import javax.validation.ConstraintViolationException;
+
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -42,8 +45,8 @@ public class ApplicationExceptionHandler {
     }
 
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseBody validationExceptionHandle(MethodArgumentNotValidException ex) {
+    @ExceptionHandler(BindException.class)
+    public ResponseBody bindException(BindException ex) {
         var errors = new HashMap<String, String>();
         ex.getAllErrors().forEach(objectError -> {
             String fieldName;
@@ -60,26 +63,41 @@ public class ApplicationExceptionHandler {
                 .error("Dữ liệu nhập vào không hợp lệ", errors);
     }
 
-    // @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    // @ExceptionHandler(HttpMessageNotReadableException.class)
-    // public ResponseBody jsonParseExceptionHandle(HttpMessageNotReadableException
-    // ex) {
-    // var errorMessage = ex.getLocalizedMessage();
-    //
-    // if (errorMessage.startsWith("JSON parse error")) {
-    // return responseBodyHelper.error("Invalid value format, type.");
-    // }
-    // if (errorMessage.startsWith("Required request body is missing")) {
-    // return responseBodyHelper.error("Request body is require");
-    // }
-    //
-    // return responseBodyHelper.error(errorMessage);
-    // }
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseBody bindException(ConstraintViolationException ex) {
+        var errors = new HashMap<String, String>();
+        ex.getConstraintViolations().forEach(constraint -> {
+            var errorMessage = constraint.getMessage();
+            var pathNameArr = constraint.getPropertyPath().toString().split("\\.");
+            var fieldName = pathNameArr[pathNameArr.length - 1];
+            errors.put(fieldName, errorMessage);
+        });
+
+        return responseBodyHelper
+                .error("Dữ liệu nhập vào không hợp lệ", errors);
+    }
+
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseBody jsonParseExceptionHandle(HttpMessageNotReadableException ex) {
+        var errorMessage = ex.getLocalizedMessage();
+
+        if (errorMessage.startsWith("JSON parse error")) {
+            errorMessage = "Request body phải có JSON format";
+        }
+
+        if (errorMessage.startsWith("Required request body is missing")) {
+            errorMessage = "Request body không được bỏ trống";
+        }
+
+        return responseBodyHelper.fail(errorMessage);
+    }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(PropertyReferenceException.class)
     public ResponseBody propertyReferenceExceptionHandler(PropertyReferenceException ex) {
-        return responseBodyHelper.error("Không tim thấy trường " + ex.getPropertyName());
+        return responseBodyHelper.error("Không tìm thấy trường " + ex.getPropertyName());
     }
 
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)

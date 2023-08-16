@@ -10,13 +10,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.auth0.jwt.exceptions.AlgorithmMismatchException;
-import com.auth0.jwt.exceptions.InvalidClaimException;
-import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.ufm.library.dto.api.ResponseBody;
+import com.ufm.library.exception.TokenBlockedException;
 import com.ufm.library.helper.ResponseBodyHelper;
 
 import lombok.RequiredArgsConstructor;
@@ -44,18 +41,17 @@ public class SecurityExceptionHanlder {
         return responseBodyHelper.fail(ex.getMessage());
     }
 
-    @ExceptionHandler(TokenExpiredException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ResponseBody handleTokenExpiredException(TokenExpiredException ex) {
-        return responseBodyHelper.fail("Token của bạn đã hết hạn");
-    }
-
-    @ExceptionHandler({ AlgorithmMismatchException.class,
-            InvalidClaimException.class,
-            JWTDecodeException.class,
-            SignatureVerificationException.class, })
+    @ExceptionHandler(JWTVerificationException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ResponseBody handleTokenExpiredException(JWTVerificationException ex) {
+        if (ex instanceof TokenExpiredException) {
+            return responseBodyHelper.fail("Token của bạn đã hết hạn");
+        }
+
+        if (ex instanceof TokenBlockedException) {
+            return responseBodyHelper.fail(ex.getMessage());
+        }
+
         return responseBodyHelper.fail("Token của bạn không hợp lệ");
     }
 
