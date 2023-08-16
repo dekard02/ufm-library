@@ -62,7 +62,8 @@ public class LocationServiceImpl implements LocationService {
     @Override
     public ResponseBody updateLocation(Long id, LocationDto locationDto) {
         if (!locationRepo.existsById(id)) {
-            new ApplicationException("Không tìm thấy cơ sở với mã " + id, HttpStatus.NOT_FOUND);
+            throw new ApplicationException("Không tìm thấy cơ sở với mã " + id,
+                    HttpStatus.NOT_FOUND);
         }
         var location = locationMapper.locationDtoToLocation(locationDto);
         location.setId(id);

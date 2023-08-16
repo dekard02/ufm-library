@@ -96,6 +96,14 @@ public class BookReturnRecordServiceImpl implements BookReturnRecordService {
     @Override
     @Transactional
     public ResponseBody saveBookReturnRecord(Request bookReturnRecordDto) {
+        bookLoanRecordRepo.findById(bookReturnRecordDto.getBookLoanRecord())
+                .ifPresent(record -> {
+                    if (record.getBookReturnRecord() != null) {
+                        throw new ApplicationException("Phiếu mượn với mã " + record.getId() + " đã có phiếu trả",
+                                HttpStatus.BAD_REQUEST);
+                    }
+                });
+
         var userDetails = (UserDetails) SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getPrincipal();
@@ -122,6 +130,15 @@ public class BookReturnRecordServiceImpl implements BookReturnRecordService {
         var oldReturnRecord = bookReturnRecordRepo.findById(id)
                 .orElseThrow(() -> new ApplicationException("Không tìm thấy phiếu trả với mã " + id,
                         HttpStatus.NOT_FOUND));
+
+        bookLoanRecordRepo.findById(bookReturnRecordDto.getBookLoanRecord())
+                .ifPresent(record -> {
+                    if (record.getBookReturnRecord() != null
+                            && record.getId() != oldReturnRecord.getBookLoanRecord().getId()) {
+                        throw new ApplicationException("Phiếu mượn với mã " + record.getId() + " đã có phiếu trả",
+                                HttpStatus.BAD_REQUEST);
+                    }
+                });
 
         oldReturnRecord.getBookLoanRecord()
                 .getBookLoanRecordItems()

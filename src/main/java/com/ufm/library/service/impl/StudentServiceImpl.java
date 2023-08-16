@@ -78,6 +78,11 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public ResponseBody saveStudent(StudentDto.Request studentDto) {
+        studentRepo.findById(studentDto.getId()).ifPresent(student -> {
+            throw new ApplicationException("Đã tồn tại sinh viên với mã " + studentDto.getId(),
+                    HttpStatus.BAD_REQUEST);
+        });
+
         var student = studentMapper.studentReqDtoToStudent(studentDto);
 
         student.setPassword(Constants.ENCODED_DEFAULT_PASSWORD);
