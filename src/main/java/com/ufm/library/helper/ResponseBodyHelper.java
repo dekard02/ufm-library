@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
+import com.ufm.library.dto.api.ErrorResponseBody;
 import com.ufm.library.dto.api.ResponseBody;
 
 import lombok.AllArgsConstructor;
@@ -21,21 +22,26 @@ public class ResponseBodyHelper {
                 .addField(fieldName, value);
     }
 
-    public ResponseBody error(String errorMessage) {
-        return ResponseBody.create()
-                .addField("status", "error")
-                .addField("message", errorMessage);
+    public ErrorResponseBody error(String errorMessage) {
+        return ErrorResponseBody.builder()
+                .status("error")
+                .message(errorMessage)
+                .build();
     }
 
-    public ResponseBody fail(String failMessage) {
-        return ResponseBody.create()
-                .addField("status", "fail")
-                .addField("message", failMessage);
+    public ErrorResponseBody fail(String failMessage) {
+        return ErrorResponseBody.builder()
+                .status("fail")
+                .message(failMessage)
+                .build();
     }
 
-    public ResponseBody error(String message, Map<String, String> errors) {
-        return this.error(message)
-                .addField("errors", errors);
+    public ErrorResponseBody.ValidationFail error(String message, Map<String, String> errors) {
+        return ErrorResponseBody.ValidationFail.builder()
+                .status("fail")
+                .message(message)
+                .errors(errors)
+                .build();
     }
 
     public ResponseBody page(Page<?> page, String fieldName, List<?> list) {
