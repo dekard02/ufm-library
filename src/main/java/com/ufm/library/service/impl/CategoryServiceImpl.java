@@ -3,7 +3,6 @@ package com.ufm.library.service.impl;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -12,7 +11,7 @@ import com.ufm.library.dto.CategoryDto;
 import com.ufm.library.dto.api.ResponseBody;
 import com.ufm.library.dto.mapper.CategoryMapper;
 import com.ufm.library.entity.QCategory;
-import com.ufm.library.exception.ApplicationException;
+import com.ufm.library.exception.NotFoundException;
 import com.ufm.library.helper.ResponseBodyHelper;
 import com.ufm.library.repository.CategoryRepository;
 import com.ufm.library.service.CategoryService;
@@ -44,8 +43,7 @@ public class CategoryServiceImpl implements CategoryService {
     public ResponseBody getCategory(Long id) {
         var categoryDto = categoryRepo.findById(id)
                 .map(categoryMapper::categoryToCategoryDto)
-                .orElseThrow(() -> new ApplicationException(
-                        "Không tìm thấy loại sách với mã " + id, HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException("Không tìm thấy loại sách với mã " + id));
         return responseBodyHelper.success("category", categoryDto);
     }
 
@@ -61,8 +59,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public ResponseBody updateCategory(Long id, CategoryDto categoryDto) {
         if (!categoryRepo.existsById(id)) {
-            throw new ApplicationException("Không tìm thấy loại sách với mã " + id,
-                    HttpStatus.NOT_FOUND);
+            throw new NotFoundException("Không tìm thấy loại sách với mã " + id);
         }
         var category = categoryMapper.categoryDtoToCategory(categoryDto);
         category.setId(id);
@@ -79,8 +76,7 @@ public class CategoryServiceImpl implements CategoryService {
                     categoryRepo.save(category);
                 },
                 () -> {
-                    throw new ApplicationException("Không tìm thấy loại sách với mã " + id,
-                            HttpStatus.NOT_FOUND);
+                    throw new NotFoundException("Không tìm thấy loại sách với mã " + id);
                 });
     }
 }

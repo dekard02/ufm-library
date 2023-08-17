@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.ufm.library.dto.api.ErrorResponseBody;
 import com.ufm.library.exception.ApplicationException;
+import com.ufm.library.exception.NotFoundException;
 import com.ufm.library.helper.ResponseBodyHelper;
 
 import io.swagger.v3.oas.annotations.Hidden;
@@ -32,7 +33,7 @@ public class ApplicationExceptionHandler {
     private final ResponseBodyHelper responseBodyHelper;
 
     @ExceptionHandler(ApplicationException.class)
-    protected ResponseEntity<ErrorResponseBody> handle(ApplicationException ex) {
+    public ResponseEntity<ErrorResponseBody> handle(ApplicationException ex) {
         ErrorResponseBody responseBody;
         if (ex.getStatus().is5xxServerError()) {
             responseBody = responseBodyHelper.error(ex.getMessage());
@@ -43,6 +44,12 @@ public class ApplicationExceptionHandler {
         return ResponseEntity
                 .status(ex.getStatus())
                 .body(responseBody);
+    }
+
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NotFoundException.class)
+    public ErrorResponseBody notFoundException(NotFoundException ex) {
+        return responseBodyHelper.fail(ex.getMessage());
     }
 
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)

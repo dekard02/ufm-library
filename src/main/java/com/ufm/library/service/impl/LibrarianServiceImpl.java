@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,7 +18,7 @@ import com.ufm.library.dto.api.ResponseBody;
 import com.ufm.library.dto.mapper.LibrarianMapper;
 import com.ufm.library.entity.Librarian;
 import com.ufm.library.entity.QLibrarian;
-import com.ufm.library.exception.ApplicationException;
+import com.ufm.library.exception.NotFoundException;
 import com.ufm.library.helper.FilenameHelper;
 import com.ufm.library.helper.ResponseBodyHelper;
 import com.ufm.library.repository.LibrarianRepository;
@@ -61,8 +60,7 @@ public class LibrarianServiceImpl implements LibrarianService {
     public ResponseBody getLibrarian(Long id) {
         var librarianDto = librarianRepo.findById(id)
                 .map(librarianMapper::librarianToLibrarianResDto)
-                .orElseThrow(() -> new ApplicationException(
-                        "Không tìm thấy sinh viên với mã " + id, HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException("Không tìm thấy sinh viên với mã " + id));
         return responseBodyHelper.success("librarian", librarianDto);
     }
 
@@ -105,8 +103,7 @@ public class LibrarianServiceImpl implements LibrarianService {
         var librarian = librarianRepo
                 .findById(id)
                 .orElseThrow(
-                        () -> new ApplicationException("Không tìm thấy thủ thư với mã " + id,
-                                HttpStatus.NOT_FOUND));
+                        () -> new NotFoundException("Không tìm thấy thủ thư với mã " + id));
 
         var updateLibrarian = librarianMapper.librarianReqDtoToLibrarian(librarianDto, roleRepo);
         BeanUtils.copyProperties(updateLibrarian, librarian, "password", "photo", "createdAt");
@@ -134,8 +131,7 @@ public class LibrarianServiceImpl implements LibrarianService {
                     librarianRepo.save(librarian);
                 },
                 () -> {
-                    throw new ApplicationException("Không tìm thấy thủ thư với mã " + id,
-                            HttpStatus.NOT_FOUND);
+                    throw new NotFoundException("Không tìm thấy thủ thư với mã " + id);
                 });
     }
 

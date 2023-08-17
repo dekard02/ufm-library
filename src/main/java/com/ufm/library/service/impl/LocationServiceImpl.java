@@ -3,7 +3,6 @@ package com.ufm.library.service.impl;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -12,7 +11,7 @@ import com.ufm.library.dto.LocationDto;
 import com.ufm.library.dto.api.ResponseBody;
 import com.ufm.library.dto.mapper.LocationMapper;
 import com.ufm.library.entity.QLocation;
-import com.ufm.library.exception.ApplicationException;
+import com.ufm.library.exception.NotFoundException;
 import com.ufm.library.helper.ResponseBodyHelper;
 import com.ufm.library.repository.LocationRepository;
 import com.ufm.library.service.LocationService;
@@ -47,8 +46,7 @@ public class LocationServiceImpl implements LocationService {
     public ResponseBody getLocation(Long id) {
         var locationDto = locationRepo.findById(id)
                 .map(locationMapper::locationToLocationDto)
-                .orElseThrow(() -> new ApplicationException(
-                        "Không tìm thấy cơ sở với mã " + id, HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException("Không tìm thấy cơ sở với mã " + id));
         return responseBodyHelper.success("location", locationDto);
     }
 
@@ -64,8 +62,7 @@ public class LocationServiceImpl implements LocationService {
     @Override
     public ResponseBody updateLocation(Long id, LocationDto locationDto) {
         if (!locationRepo.existsById(id)) {
-            throw new ApplicationException("Không tìm thấy cơ sở với mã " + id,
-                    HttpStatus.NOT_FOUND);
+            throw new NotFoundException("Không tìm thấy cơ sở với mã " + id);
         }
         var location = locationMapper.locationDtoToLocation(locationDto);
         location.setId(id);
@@ -82,8 +79,7 @@ public class LocationServiceImpl implements LocationService {
                     locationRepo.save(location);
                 },
                 () -> {
-                    throw new ApplicationException("Không tìm thấy cơ sở với mã " + id,
-                            HttpStatus.NOT_FOUND);
+                    throw new NotFoundException("Không tìm thấy cơ sở với mã " + id);
                 });
     }
 }

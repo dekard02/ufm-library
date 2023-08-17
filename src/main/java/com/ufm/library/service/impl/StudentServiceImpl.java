@@ -20,6 +20,7 @@ import com.ufm.library.dto.mapper.StudentMapper;
 import com.ufm.library.entity.QStudent;
 import com.ufm.library.entity.Student;
 import com.ufm.library.exception.ApplicationException;
+import com.ufm.library.exception.NotFoundException;
 import com.ufm.library.helper.FilenameHelper;
 import com.ufm.library.helper.ResponseBodyHelper;
 import com.ufm.library.repository.StudentRepository;
@@ -58,8 +59,7 @@ public class StudentServiceImpl implements StudentService {
     public ResponseBody getStudent(String id) {
         var studentDto = studentRepo.findById(id)
                 .map(studentMapper::studentToStudentResDto)
-                .orElseThrow(() -> new ApplicationException(
-                        "Không tìm thấy sinh viên với mã " + id, HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException("Không tìm thấy sinh viên với mã " + id));
         return responseBodyHelper.success("student", studentDto);
     }
 
@@ -105,8 +105,7 @@ public class StudentServiceImpl implements StudentService {
         var student = studentRepo
                 .findById(id)
                 .orElseThrow(
-                        () -> new ApplicationException("Không tìm thấy loại sách với mã " + id,
-                                HttpStatus.NOT_FOUND));
+                        () -> new NotFoundException("Không tìm thấy loại sách với mã " + id));
 
         BeanUtils.copyProperties(studentDto, student, "password", "photo", "createdAt");
         student.setId(id);
@@ -132,8 +131,7 @@ public class StudentServiceImpl implements StudentService {
                     studentRepo.save(student);
                 },
                 () -> {
-                    throw new ApplicationException("Không tìm thấy sinh viên với mã " + id,
-                            HttpStatus.NOT_FOUND);
+                    throw new NotFoundException("Không tìm thấy sinh viên với mã " + id);
                 });
     }
 }

@@ -3,7 +3,6 @@ package com.ufm.library.service.impl;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -12,7 +11,7 @@ import com.ufm.library.dto.AuthorDto;
 import com.ufm.library.dto.api.ResponseBody;
 import com.ufm.library.dto.mapper.AuthorMapper;
 import com.ufm.library.entity.QAuthor;
-import com.ufm.library.exception.ApplicationException;
+import com.ufm.library.exception.NotFoundException;
 import com.ufm.library.helper.ResponseBodyHelper;
 import com.ufm.library.repository.AuthorRepository;
 import com.ufm.library.service.AuthorService;
@@ -45,8 +44,7 @@ public class AuthorServiceImpl implements AuthorService {
     public ResponseBody getAuthor(Long id) {
         var authorDto = authorRepo.findById(id)
                 .map(authorMapper::authorToAuthorDto)
-                .orElseThrow(() -> new ApplicationException(
-                        "Không tìm thấy tác giả với mã " + id, HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException("Không tìm thấy tác giả với mã " + id));
         return responseBodyHelper.success("author", authorDto);
     }
 
@@ -62,8 +60,7 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public ResponseBody updateAuthor(Long id, AuthorDto authorDto) {
         if (!authorRepo.existsById(id)) {
-            throw new ApplicationException("Không tìm thấy tác giả với mã " + id,
-                    HttpStatus.NOT_FOUND);
+            throw new NotFoundException("Không tìm thấy tác giả với mã " + id);
         }
         var author = authorMapper.authorDtoToAuthor(authorDto);
         author.setId(id);
@@ -80,8 +77,7 @@ public class AuthorServiceImpl implements AuthorService {
                     authorRepo.save(author);
                 },
                 () -> {
-                    throw new ApplicationException("Không tìm thấy tác giả với mã " + id,
-                            HttpStatus.NOT_FOUND);
+                    throw new NotFoundException("Không tìm thấy tác giả với mã " + id);
                 });
     }
 }

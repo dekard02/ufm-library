@@ -17,6 +17,7 @@ import com.ufm.library.entity.Librarian;
 import com.ufm.library.entity.QBookLoanRecord;
 import com.ufm.library.entity.Student;
 import com.ufm.library.exception.ApplicationException;
+import com.ufm.library.exception.NotFoundException;
 import com.ufm.library.helper.ResponseBodyHelper;
 import com.ufm.library.repository.BookLoanRecordRepository;
 import com.ufm.library.repository.BookReturnRecordRepository;
@@ -62,8 +63,8 @@ public class BookReturnRecordServiceImpl implements BookReturnRecordService {
     public ResponseBody getBookReturnRecord(Long id) {
         var returnRecordDto = bookReturnRecordRepo.findById(id)
                 .map(bookReturnRecordMapper::bookReturnRecordToDetailDto)
-                .orElseThrow(() -> new ApplicationException(
-                        "Không tìm thấy phiếu trả với mã " + id, HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(
+                        "Không tìm thấy phiếu trả với mã " + id));
 
         var userDetails = (UserDetails) SecurityContextHolder.getContext()
                 .getAuthentication()
@@ -101,9 +102,8 @@ public class BookReturnRecordServiceImpl implements BookReturnRecordService {
         bookLoanRecordRepo.findById(bookReturnRecordDto.getBookLoanRecord())
                 .ifPresent(record -> {
                     if (record.getBookReturnRecord() != null) {
-                        throw new ApplicationException(
-                                "Phiếu mượn với mã " + record.getId()
-                                        + " đã có phiếu trả",
+                        throw new ApplicationException("Phiếu mượn với mã " + record.getId()
+                                + " đã có phiếu trả",
                                 HttpStatus.BAD_REQUEST);
                     }
                 });
@@ -132,8 +132,7 @@ public class BookReturnRecordServiceImpl implements BookReturnRecordService {
     @Transactional
     public ResponseBody updateBookReturnRecord(Long id, Request bookReturnRecordDto) {
         var oldReturnRecord = bookReturnRecordRepo.findById(id)
-                .orElseThrow(() -> new ApplicationException("Không tìm thấy phiếu trả với mã " + id,
-                        HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException("Không tìm thấy phiếu trả với mã " + id));
 
         bookLoanRecordRepo.findById(bookReturnRecordDto.getBookLoanRecord())
                 .ifPresent(record -> {
@@ -177,8 +176,7 @@ public class BookReturnRecordServiceImpl implements BookReturnRecordService {
     @Override
     public void deleteBookReturnRecord(Long id) {
         var returnRecord = bookReturnRecordRepo.findById(id).orElseThrow(
-                () -> new ApplicationException("Không tìm thấy phiếu trả với mã " + id,
-                        HttpStatus.NOT_FOUND));
+                () -> new NotFoundException("Không tìm thấy phiếu trả với mã " + id));
         bookReturnRecordRepo.delete(returnRecord);
     }
 

@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,7 +22,7 @@ import com.ufm.library.dto.mapper.BookMapper;
 import com.ufm.library.entity.Book;
 import com.ufm.library.entity.BookPhoto;
 import com.ufm.library.entity.QBook;
-import com.ufm.library.exception.ApplicationException;
+import com.ufm.library.exception.NotFoundException;
 import com.ufm.library.helper.FilenameHelper;
 import com.ufm.library.helper.ResponseBodyHelper;
 import com.ufm.library.repository.AuthorRepository;
@@ -68,8 +67,7 @@ public class BookServiceImpl implements BookService {
     public ResponseBody getBook(Long id) {
         var bookDto = bookRepo.findById(id)
                 .map(bookMapper::bookToBookDetailResDto)
-                .orElseThrow(() -> new ApplicationException(
-                        "Không tìm thấy sách với mã " + id, HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException("Không tìm thấy sách với mã " + id));
         return responseBodyHelper.success("book", bookDto);
     }
 
@@ -114,8 +112,7 @@ public class BookServiceImpl implements BookService {
         var oldBook = bookRepo
                 .findById(id)
                 .orElseThrow(
-                        () -> new ApplicationException("Không tìm thấy sách với mã " + id,
-                                HttpStatus.NOT_FOUND));
+                        () -> new NotFoundException("Không tìm thấy sách với mã " + id));
 
         var book = bookMapper.bookUpdateReqDtoToBook(bookDto, categoryRepo, authorRepo);
 
@@ -143,8 +140,7 @@ public class BookServiceImpl implements BookService {
                     bookRepo.save(book);
                 },
                 () -> {
-                    throw new ApplicationException("Không tìm thấy sách với mã " + id,
-                            HttpStatus.NOT_FOUND);
+                    throw new NotFoundException("Không tìm thấy sách với mã " + id);
                 });
     }
 

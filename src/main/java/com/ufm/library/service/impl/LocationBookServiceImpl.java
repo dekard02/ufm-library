@@ -11,6 +11,7 @@ import com.ufm.library.dto.api.ResponseBody;
 import com.ufm.library.dto.mapper.LocationBookMapper;
 import com.ufm.library.entity.key.LocationBookKey;
 import com.ufm.library.exception.ApplicationException;
+import com.ufm.library.exception.NotFoundException;
 import com.ufm.library.helper.ResponseBodyHelper;
 import com.ufm.library.repository.BookRepository;
 import com.ufm.library.repository.LocationBookRepository;
@@ -45,8 +46,7 @@ public class LocationBookServiceImpl implements LocationBookService {
         var locationBook = locationBookRepo.findById(locationBookKey)
                 .map(locationBookMapper::locationBookToLocationBookDto)
                 .orElseThrow(
-                        () -> new ApplicationException("Không tìm thấy sách ở cơ sở với này",
-                                HttpStatus.NOT_FOUND));
+                        () -> new NotFoundException("Không tìm thấy sách ở cơ sở với này"));
         return responseBodyHelper.success("locationBook", locationBook);
     }
 
@@ -73,6 +73,12 @@ public class LocationBookServiceImpl implements LocationBookService {
     @Override
     public ResponseBody updateLocationBook(Long bookId, Long locationId,
             LocationBookDto.UpdateRequest locationBookDto) {
+        var locationBookKey = new LocationBookKey(locationBookDto.getLocationId(), bookId);
+        locationBookRepo.findById(locationBookKey).ifPresent(
+                (locationBook) -> {
+                    throw new NotFoundException("Không tìm thấy thông tin sách ở cơ sở này");
+                });
+
         locationBookDto.setBookId(bookId);
         locationBookDto.setLocationId(locationId);
 
