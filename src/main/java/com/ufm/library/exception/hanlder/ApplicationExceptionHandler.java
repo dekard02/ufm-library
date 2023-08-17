@@ -18,10 +18,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.ufm.library.dto.api.ResponseBody;
+import com.ufm.library.dto.api.ErrorResponseBody;
 import com.ufm.library.exception.ApplicationException;
 import com.ufm.library.helper.ResponseBodyHelper;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.RequiredArgsConstructor;
 
 @RestControllerAdvice
@@ -31,8 +32,8 @@ public class ApplicationExceptionHandler {
     private final ResponseBodyHelper responseBodyHelper;
 
     @ExceptionHandler(ApplicationException.class)
-    protected ResponseEntity<ResponseBody> handle(ApplicationException ex) {
-        ResponseBody responseBody;
+    protected ResponseEntity<ErrorResponseBody> handle(ApplicationException ex) {
+        ErrorResponseBody responseBody;
         if (ex.getStatus().is5xxServerError()) {
             responseBody = responseBodyHelper.error(ex.getMessage());
         } else {
@@ -46,7 +47,7 @@ public class ApplicationExceptionHandler {
 
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BindException.class)
-    public ResponseBody bindException(BindException ex) {
+    public ErrorResponseBody bindException(BindException ex) {
         var errors = new HashMap<String, String>();
         ex.getAllErrors().forEach(objectError -> {
             String fieldName;
@@ -65,7 +66,7 @@ public class ApplicationExceptionHandler {
 
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseBody bindException(ConstraintViolationException ex) {
+    public ErrorResponseBody bindException(ConstraintViolationException ex) {
         var errors = new HashMap<String, String>();
         ex.getConstraintViolations().forEach(constraint -> {
             var errorMessage = constraint.getMessage();
@@ -80,7 +81,7 @@ public class ApplicationExceptionHandler {
 
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseBody jsonParseExceptionHandle(HttpMessageNotReadableException ex) {
+    public ErrorResponseBody jsonParseExceptionHandle(HttpMessageNotReadableException ex) {
         var errorMessage = ex.getLocalizedMessage();
 
         if (errorMessage.startsWith("JSON parse error")) {
@@ -96,20 +97,21 @@ public class ApplicationExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(PropertyReferenceException.class)
-    public ResponseBody propertyReferenceExceptionHandler(PropertyReferenceException ex) {
+    public ErrorResponseBody propertyReferenceExceptionHandler(PropertyReferenceException ex) {
         return responseBodyHelper.error("Không tìm thấy trường " + ex.getPropertyName());
     }
 
+    @Hidden
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public ResponseBody methodNotSupportedHandler(HttpRequestMethodNotSupportedException ex) {
+    public ErrorResponseBody methodNotSupportedHandler(HttpRequestMethodNotSupportedException ex) {
         return responseBodyHelper
                 .fail("Request method " + ex.getMethod() + " not support on this route");
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseBody dataIntegrityViolationException(DataIntegrityViolationException ex) {
+    public ErrorResponseBody dataIntegrityViolationException(DataIntegrityViolationException ex) {
         var message = "Đã xảy ra lỗi";
 
         if (ex.getRootCause() instanceof SQLIntegrityConstraintViolationException) {

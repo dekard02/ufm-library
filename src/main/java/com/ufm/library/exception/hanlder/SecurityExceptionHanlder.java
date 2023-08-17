@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
-import com.ufm.library.dto.api.ResponseBody;
+import com.ufm.library.dto.api.ErrorResponseBody;
 import com.ufm.library.exception.TokenBlockedException;
 import com.ufm.library.helper.ResponseBodyHelper;
 
@@ -25,7 +25,7 @@ public class SecurityExceptionHanlder {
     private final ResponseBodyHelper responseBodyHelper;
 
     @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<ResponseBody> handleAccessDeniedException(AccessDeniedException ex) {
+    public ResponseEntity<ErrorResponseBody> handleAccessDeniedException(AccessDeniedException ex) {
         if (SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) {
             var response = responseBodyHelper.fail("Hãy đăng nhập để tiếp tục");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
@@ -37,13 +37,13 @@ public class SecurityExceptionHanlder {
 
     @ExceptionHandler(AuthenticationException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ResponseBody handleJwtExpire(AuthenticationException ex) {
+    public ErrorResponseBody handleJwtExpire(AuthenticationException ex) {
         return responseBodyHelper.fail(ex.getMessage());
     }
 
     @ExceptionHandler(JWTVerificationException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ResponseBody handleTokenExpiredException(JWTVerificationException ex) {
+    public ErrorResponseBody handleTokenExpiredException(JWTVerificationException ex) {
         if (ex instanceof TokenExpiredException) {
             return responseBodyHelper.fail("Token của bạn đã hết hạn");
         }
