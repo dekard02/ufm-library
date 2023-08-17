@@ -8,11 +8,15 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.ufm.library.entity.BookLoanRecord;
 import com.ufm.library.validation.annotation.Exist;
 
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
 public class BookReturnRecordDto {
+
+    @Hidden
     private Long id;
 
     private Double fine;
@@ -35,6 +39,7 @@ public class BookReturnRecordDto {
     @Data
     @EqualsAndHashCode(callSuper = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @Schema(name = "BookReturnRecord")
     public static class DetailResponse extends BookReturnRecordDto {
         private LibrarianDto.CommonField librarian;
 

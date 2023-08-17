@@ -1,5 +1,6 @@
 package com.ufm.library.controller.impl;
 
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.data.web.PageableDefault;
@@ -22,21 +23,27 @@ import com.ufm.library.dto.api.ResponseBody;
 import com.ufm.library.entity.Student;
 import com.ufm.library.service.StudentService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("api/v1/students")
 @PreAuthorize("hasAnyRole('LIBRARIAN','MANAGER')")
 @RequiredArgsConstructor
+@Tag(name = "Student", description = "Student information management")
+@SecurityRequirement(name = "JWT")
 public class StudentControllerImpl implements StudentController {
 
     private final StudentService studentService;
 
     @Override
     @GetMapping
+    @Operation(summary = "Get all students information")
     public ResponseEntity<ResponseBody> getAllStudents(
             @QuerydslPredicate(root = Student.class) Predicate predicate,
-            @PageableDefault Pageable pageable,
+            @ParameterObject @PageableDefault Pageable pageable,
             @RequestParam(defaultValue = "", required = false) String search) {
         var response = studentService.getAllStudents(predicate, pageable, search);
         return ResponseEntity.ok(response);
@@ -44,6 +51,7 @@ public class StudentControllerImpl implements StudentController {
 
     @Override
     @GetMapping("{id}")
+    @Operation(summary = "Get one student information")
     public ResponseEntity<ResponseBody> getStudent(@PathVariable String id) {
         var response = studentService.getStudent(id);
         return ResponseEntity.ok(response);
@@ -51,6 +59,7 @@ public class StudentControllerImpl implements StudentController {
 
     @Override
     @PostMapping
+    @Operation(summary = "Save student information")
     public ResponseEntity<ResponseBody> createStudent(StudentDto.Request studentDto) {
         var response = studentService.saveStudent(studentDto);
         return ResponseEntity
@@ -60,6 +69,7 @@ public class StudentControllerImpl implements StudentController {
 
     @Override
     @PutMapping("{id}")
+    @Operation(summary = "Update student information")
     public ResponseEntity<ResponseBody> updateStudent(@PathVariable String id,
             StudentDto.Request studentDto) {
         var response = studentService.updateStudent(id, studentDto);
@@ -68,6 +78,7 @@ public class StudentControllerImpl implements StudentController {
 
     @Override
     @DeleteMapping("{id}")
+    @Operation(summary = "Delete student information")
     public ResponseEntity<ResponseBody> deleteStudent(@PathVariable String id) {
         studentService.deleteStudent(id);
         return ResponseEntity

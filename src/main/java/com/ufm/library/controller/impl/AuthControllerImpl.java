@@ -19,11 +19,15 @@ import com.ufm.library.dto.auth.ChangePasswordDto;
 import com.ufm.library.dto.auth.SignInDto;
 import com.ufm.library.service.AuthService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("api/v1/auth")
 @RequiredArgsConstructor
+@Tag(name = "Authentication", description = "Authentication mamagement")
 public class AuthControllerImpl implements AuthController {
 
     private final AuthService authService;
@@ -31,6 +35,8 @@ public class AuthControllerImpl implements AuthController {
     @Override
     @PreAuthorize("isAuthenticated()")
     @GetMapping("profile")
+    @Operation(summary = "Get profile of current login user")
+    @SecurityRequirement(name = "JWT")
     public ResponseEntity<ResponseBody> getProfile() {
         var responseBody = authService.getProfile();
         return ResponseEntity.ok(responseBody);
@@ -38,6 +44,7 @@ public class AuthControllerImpl implements AuthController {
 
     @Override
     @PostMapping("sign-in")
+    @Operation(summary = "Sign in")
     public ResponseEntity<ResponseBody> signIn(@RequestBody SignInDto signInDto,
             HttpServletResponse response) {
         var responseBody = authService.signIn(signInDto, response);
@@ -47,6 +54,8 @@ public class AuthControllerImpl implements AuthController {
     @Override
     @PreAuthorize("isAuthenticated()")
     @PostMapping("change-password")
+    @Operation(summary = "Change password")
+    @SecurityRequirement(name = "JWT")
     public ResponseEntity<ResponseBody> changePassword(
             Authentication authentication,
             @RequestBody ChangePasswordDto changePasswordDto,
@@ -61,8 +70,10 @@ public class AuthControllerImpl implements AuthController {
     }
 
     @Override
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuhenticated()")
     @PostMapping("sign-out")
+    @Operation(summary = "Sign out")
+    @SecurityRequirement(name = "JWT")
     public ResponseEntity<ResponseBody> signOut(
             @RequestHeader(name = "Authorization", defaultValue = "", required = false) String authHeader,
             @CookieValue(name = "refreshToken", defaultValue = "", required = false) String refreshToken) {
@@ -74,10 +85,10 @@ public class AuthControllerImpl implements AuthController {
     }
 
     @Override
-    @PreAuthorize("isAuthenticated()")
     @PostMapping("refresh-token")
+    @Operation(summary = "Refresh access token")
     public ResponseEntity<ResponseBody> refreshToken(
-            @CookieValue(name = "refreshToken", defaultValue = "", required = false) String refreshToken) {
+            @CookieValue(defaultValue = "") String refreshToken) {
         var response = authService.refreshToken(refreshToken);
         return ResponseEntity.ok(response);
     }

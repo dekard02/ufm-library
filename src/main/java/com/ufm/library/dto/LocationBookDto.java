@@ -7,6 +7,7 @@ import com.ufm.library.entity.Book;
 import com.ufm.library.entity.Location;
 import com.ufm.library.validation.annotation.Exist;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -44,6 +45,7 @@ public class LocationBookDto {
     @Data
     @EqualsAndHashCode(callSuper = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @Schema(name = "Location Book Create Request")
     public static class CreateRequest extends LocationBookDto {
 
     }
@@ -51,6 +53,7 @@ public class LocationBookDto {
     @Data
     @EqualsAndHashCode(callSuper = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @Schema(name = "Location Book Update Request")
     public static class UpdateRequest extends LocationBookDto {
 
         @Size(min = 0, message = "Số lượng sách đang mượn không thể bé hơn 0")

@@ -27,3 +27,6 @@ jwt.long-expires-time=2592000
 
 redis.host=
 redis.port=
+
+open-api.app-version=
+open-api.production-server-url=

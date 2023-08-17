@@ -2,6 +2,7 @@ package com.ufm.library.controller.impl;
 
 import static org.springframework.data.domain.Sort.Direction.DESC;
 
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.data.web.PageableDefault;
@@ -25,26 +26,34 @@ import com.ufm.library.dto.api.ResponseBody;
 import com.ufm.library.entity.Book;
 import com.ufm.library.service.BookService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("api/v1/books")
 @RequiredArgsConstructor
+@Tag(name = "Book", description = "Book information management")
 public class BookControllerImpl implements BookController {
+
     private final BookService bookService;
 
     @Override
     @GetMapping
+    @Operation(summary = "Get all books information")
     public ResponseEntity<ResponseBody> getAllBooks(
             @QuerydslPredicate(root = Book.class) Predicate predicate,
-            @PageableDefault(sort = "createdAt", direction = DESC) Pageable pageable,
-            @RequestParam(defaultValue = "", required = false) String search) {
+            @ParameterObject @PageableDefault(sort = "createdAt", direction = DESC) Pageable pageable,
+            @Parameter @RequestParam(defaultValue = "", required = false) String search) {
         var response = bookService.getAllBooks(predicate, pageable, search);
         return ResponseEntity.ok(response);
     }
 
     @Override
     @GetMapping("{id}")
+    @Operation(summary = "Get one book information")
     public ResponseEntity<ResponseBody> getBook(@PathVariable Long id) {
         var response = bookService.getBook(id);
         return ResponseEntity.ok(response);
@@ -53,6 +62,8 @@ public class BookControllerImpl implements BookController {
     @Override
     @PostMapping
     @PreAuthorize("hasAnyRole('LIBRARIAN','MANAGER')")
+    @SecurityRequirement(name = "JWT")
+    @Operation(summary = "Save book information")
     public ResponseEntity<ResponseBody> createBook(CreateRequest bookDto) {
         var response = bookService.saveBook(bookDto);
         return ResponseEntity
@@ -63,6 +74,8 @@ public class BookControllerImpl implements BookController {
     @Override
     @PutMapping("{id}")
     @PreAuthorize("hasAnyRole('LIBRARIAN','MANAGER')")
+    @SecurityRequirement(name = "JWT")
+    @Operation(summary = "Update book information")
     public ResponseEntity<ResponseBody> updateBook(@PathVariable Long id,
             UpdateRequest bookDto) {
         var response = bookService.updateBook(id, bookDto);
@@ -72,6 +85,8 @@ public class BookControllerImpl implements BookController {
     @Override
     @DeleteMapping("{id}")
     @PreAuthorize("hasAnyRole('LIBRARIAN','MANAGER')")
+    @SecurityRequirement(name = "JWT")
+    @Operation(summary = "Delete book information")
     public ResponseEntity<ResponseBody> deleteBook(@PathVariable Long id) {
         bookService.deleteBook(id);
         return ResponseEntity

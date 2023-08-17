@@ -16,17 +16,22 @@ import com.ufm.library.dto.LocationBookDto;
 import com.ufm.library.dto.api.ResponseBody;
 import com.ufm.library.service.LocationBookService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("api/v1/books")
 @RequiredArgsConstructor
+@Tag(name = "Location Book", description = "Manage book information in each location")
 public class LocationBookControllerImpl implements LocationBookController {
 
     private final LocationBookService locationBookService;
 
     @Override
     @GetMapping("{bookId}/locations")
+    @Operation(summary = "Get book infomation in all locations")
     public ResponseEntity<ResponseBody> getAllLocationBooks(@PathVariable Long bookId) {
         var response = locationBookService.getAllLocationBooks(bookId);
         return ResponseEntity.ok(response);
@@ -34,6 +39,7 @@ public class LocationBookControllerImpl implements LocationBookController {
 
     @Override
     @GetMapping("{bookId}/locations/{locationId}")
+    @Operation(summary = "Get book infomation in one locations")
     public ResponseEntity<ResponseBody> getLocationBook(@PathVariable Long bookId,
             @PathVariable Long locationId) {
         var response = locationBookService.getLocationBook(bookId, locationId);
@@ -43,6 +49,8 @@ public class LocationBookControllerImpl implements LocationBookController {
     @Override
     @PostMapping("{bookId}/locations")
     @PreAuthorize("hasAnyRole('LIBRARIAN','MANAGER')")
+    @Operation(summary = "Save book infomation in location")
+    @SecurityRequirement(name = "JWT")
     public ResponseEntity<ResponseBody> createLocationBook(@PathVariable Long bookId,
             @RequestBody LocationBookDto.CreateRequest locationBookDto) {
         var response = locationBookService.saveLocationBook(bookId, locationBookDto);
@@ -54,6 +62,8 @@ public class LocationBookControllerImpl implements LocationBookController {
     @Override
     @PutMapping("{bookId}/locations/{locationId}")
     @PreAuthorize("hasAnyRole('LIBRARIAN','MANAGER')")
+    @Operation(summary = "Update book infomation in location")
+    @SecurityRequirement(name = "JWT")
     public ResponseEntity<ResponseBody> updateLocationBook(@PathVariable Long bookId,
             @PathVariable Long locationId,
             @RequestBody LocationBookDto.UpdateRequest locationBookDto) {

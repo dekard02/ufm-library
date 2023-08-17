@@ -2,6 +2,7 @@ package com.ufm.library.controller.impl;
 
 import static org.springframework.data.domain.Sort.Direction.DESC;
 
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.data.web.PageableDefault;
@@ -24,27 +25,34 @@ import com.ufm.library.dto.api.ResponseBody;
 import com.ufm.library.entity.BookReturnRecord;
 import com.ufm.library.service.BookReturnRecordService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @PreAuthorize("isAuthenticated()")
 @RequestMapping("api/v1/book-return-records")
 @RequiredArgsConstructor
+@Tag(name = "Book Return Record", description = "Book return record management")
+@SecurityRequirement(name = "JWT")
 public class BookReturnRecordControllerImpl implements BookReturnRecordController {
 
     private final BookReturnRecordService bookReturnRecordService;
 
     @Override
     @GetMapping
+    @Operation(summary = "Get all book return records information")
     public ResponseEntity<ResponseBody> getAllBookReturnRecords(
             @QuerydslPredicate(root = BookReturnRecord.class) Predicate predicate,
-            @PageableDefault(sort = "returnDate", direction = DESC) Pageable pageable) {
+            @ParameterObject @PageableDefault(sort = "returnDate", direction = DESC) Pageable pageable) {
         var response = bookReturnRecordService.getAllBookReturnRecords(predicate, pageable);
         return ResponseEntity.ok(response);
     }
 
     @Override
     @GetMapping("{id}")
+    @Operation(summary = "Get one book return record information")
     public ResponseEntity<ResponseBody> getBookReturnRecord(@PathVariable Long id) {
         var response = bookReturnRecordService.getBookReturnRecord(id);
         return ResponseEntity.ok(response);
@@ -53,6 +61,7 @@ public class BookReturnRecordControllerImpl implements BookReturnRecordControlle
     @Override
     @PostMapping
     @PreAuthorize("hasAnyRole('LIBRARIAN','MANAGER')")
+    @Operation(summary = "Save book return record information")
     public ResponseEntity<ResponseBody> createBookReturnRecord(
             @RequestBody BookReturnRecordDto.Request bookReturnRecordDto) {
         var response = bookReturnRecordService.saveBookReturnRecord(bookReturnRecordDto);
@@ -64,6 +73,7 @@ public class BookReturnRecordControllerImpl implements BookReturnRecordControlle
     @Override
     @PutMapping("{id}")
     @PreAuthorize("hasAnyRole('LIBRARIAN','MANAGER')")
+    @Operation(summary = "Update book return record information")
     public ResponseEntity<ResponseBody> updateBookReturnRecord(@PathVariable Long id,
             @RequestBody BookReturnRecordDto.Request bookReturnRecordDto) {
         var response = bookReturnRecordService.updateBookReturnRecord(id, bookReturnRecordDto);
@@ -73,6 +83,7 @@ public class BookReturnRecordControllerImpl implements BookReturnRecordControlle
     @Override
     @DeleteMapping("{id}")
     @PreAuthorize("hasAnyRole('LIBRARIAN','MANAGER')")
+    @Operation(summary = "Delete book return record information")
     public ResponseEntity<ResponseBody> deleteBookReturnRecord(@PathVariable Long id) {
         bookReturnRecordService.deleteBookReturnRecord(id);
         return ResponseEntity

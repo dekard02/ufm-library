@@ -5,8 +5,8 @@ import java.util.List;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
-import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -16,6 +16,8 @@ import com.ufm.library.validation.annotation.Exist;
 import com.ufm.library.validation.annotation.IsImage;
 import com.ufm.library.validation.annotation.ListSize;
 
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -26,12 +28,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BookDto {
+    @Hidden
     private Long id;
 
     @NotBlank(message = "Trường fullname không được bỏ trống")
-    @Length(max = 150, message = "Tiêu đề sách không được dài quá 150 ký tự")
+    @Size(max = 150, message = "Tiêu đề sách không được dài quá 150 ký tự")
     private String title;
 
+    @Hidden
     private String slug;
 
     private Integer totalPages;
@@ -65,6 +69,7 @@ public class BookDto {
     @Data
     @EqualsAndHashCode(callSuper = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @Schema(name = "Book")
     public static class CreateRequest extends BookDto {
 
         @NotNull(message = "Trường author không được bỏ trống")

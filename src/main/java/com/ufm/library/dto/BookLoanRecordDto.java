@@ -8,6 +8,8 @@ import javax.validation.constraints.NotNull;
 import com.ufm.library.validation.annotation.ListSize;
 import com.ufm.library.validation.annotation.ValidRecordItems;
 
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,6 +20,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BookLoanRecordDto {
 
+    @Hidden
     private Long id;
 
     private String note;
@@ -64,6 +67,7 @@ public class BookLoanRecordDto {
 
     @Data
     @EqualsAndHashCode(callSuper = true)
+    @Schema(name = "BookLoanRecord")
     public static class Request extends BookLoanRecordDto {
         @NotNull(message = "Trường student không được bỏ trống")
         private String student;

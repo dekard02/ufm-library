@@ -4,9 +4,11 @@ import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
+@Schema(name = "Change password")
 public class ChangePasswordDto {
 
     @NotBlank(message = "Mật khẩu hiện tại không được bỏ trống")

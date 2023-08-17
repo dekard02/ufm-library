@@ -1,5 +1,6 @@
 package com.ufm.library.controller.impl;
 
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.data.web.PageableDefault;
@@ -23,20 +24,25 @@ import com.ufm.library.dto.api.ResponseBody;
 import com.ufm.library.entity.Category;
 import com.ufm.library.service.CategoryService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("api/v1/categories")
 @RequiredArgsConstructor
+@Tag(name = "Category", description = "Category information management")
 public class CategoryControllerImpl implements CategoryController {
 
     private final CategoryService categoryService;
 
     @Override
     @GetMapping
+    @Operation(summary = "Get all categories information")
     public ResponseEntity<ResponseBody> getAllCategories(
             @QuerydslPredicate(root = Category.class) Predicate predicate,
-            @PageableDefault Pageable pageable,
+            @ParameterObject @PageableDefault Pageable pageable,
             @RequestParam(defaultValue = "", required = false) String search) {
         var response = categoryService.getAllCategories(predicate, pageable, search);
         return ResponseEntity.ok(response);
@@ -44,6 +50,7 @@ public class CategoryControllerImpl implements CategoryController {
 
     @Override
     @GetMapping("{id}")
+    @Operation(summary = "Get one category information")
     public ResponseEntity<ResponseBody> getCategory(@PathVariable Long id) {
         var response = categoryService.getCategory(id);
         return ResponseEntity.ok(response);
@@ -52,6 +59,8 @@ public class CategoryControllerImpl implements CategoryController {
     @Override
     @PostMapping
     @PreAuthorize("hasAnyRole('LIBRARIAN','MANAGER')")
+    @Operation(summary = "Save category information")
+    @SecurityRequirement(name = "JWT")
     public ResponseEntity<ResponseBody> createCategory(@RequestBody CategoryDto categoryDto) {
         var response = categoryService.saveCategory(categoryDto);
         return ResponseEntity
@@ -62,6 +71,8 @@ public class CategoryControllerImpl implements CategoryController {
     @Override
     @PutMapping("{id}")
     @PreAuthorize("hasAnyRole('LIBRARIAN','MANAGER')")
+    @Operation(summary = "Update category information")
+    @SecurityRequirement(name = "JWT")
     public ResponseEntity<ResponseBody> updateCategory(@PathVariable Long id,
             @RequestBody CategoryDto categoryDto) {
         var response = categoryService.updateCategory(id, categoryDto);
@@ -71,6 +82,8 @@ public class CategoryControllerImpl implements CategoryController {
     @Override
     @DeleteMapping("{id}")
     @PreAuthorize("hasAnyRole('LIBRARIAN','MANAGER')")
+    @Operation(summary = "Delete category information")
+    @SecurityRequirement(name = "JWT")
     public ResponseEntity<ResponseBody> deleteCategory(@PathVariable Long id) {
         categoryService.deleteCategory(id);
         return ResponseEntity

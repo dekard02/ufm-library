@@ -1,5 +1,6 @@
 package com.ufm.library.controller.impl;
 
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
@@ -24,21 +25,27 @@ import com.ufm.library.dto.api.ResponseBody;
 import com.ufm.library.entity.BookLoanRecord;
 import com.ufm.library.service.BookLoanRecordService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @PreAuthorize("isAuthenticated()")
 @RequestMapping("api/v1/book-loan-records")
 @RequiredArgsConstructor
+@Tag(name = "Book Loan Record", description = "Book loan record management")
+@SecurityRequirement(name = "JWT")
 public class BookLoanRecordControllerImpl implements BookLoanRecordController {
 
     private final BookLoanRecordService bookLoanRecordService;
 
     @Override
     @GetMapping
+    @Operation(summary = "Get all book loan records information")
     public ResponseEntity<ResponseBody> getAllBookLoanRecords(
             @QuerydslPredicate(root = BookLoanRecord.class) Predicate predicate,
-            @PageableDefault(sort = "loanDate", direction = Direction.DESC) Pageable pageable,
+            @ParameterObject @PageableDefault(sort = "loanDate", direction = Direction.DESC) Pageable pageable,
             @RequestParam(required = false) Boolean returned) {
         var response = bookLoanRecordService.getAllBookLoanRecords(predicate, pageable, returned);
         return ResponseEntity.ok(response);
@@ -46,6 +53,7 @@ public class BookLoanRecordControllerImpl implements BookLoanRecordController {
 
     @Override
     @GetMapping("{id}")
+    @Operation(summary = "Get one book loan record information")
     public ResponseEntity<ResponseBody> getBookLoanRecord(@PathVariable Long id) {
         var response = bookLoanRecordService.getBookLoanRecord(id);
         return ResponseEntity.ok(response);
@@ -54,6 +62,7 @@ public class BookLoanRecordControllerImpl implements BookLoanRecordController {
     @Override
     @PostMapping
     @PreAuthorize("hasAnyRole('LIBRARIAN','MANAGER')")
+    @Operation(summary = "Save book loan record information")
     public ResponseEntity<ResponseBody> createBookLoanRecord(
             @RequestBody BookLoanRecordDto.Request bookLoanRecordDto) {
         var response = bookLoanRecordService.saveBookLoanRecord(bookLoanRecordDto);
@@ -65,6 +74,7 @@ public class BookLoanRecordControllerImpl implements BookLoanRecordController {
     @Override
     @PutMapping("{id}")
     @PreAuthorize("hasAnyRole('LIBRARIAN','MANAGER')")
+    @Operation(summary = "Update book loan record information")
     public ResponseEntity<ResponseBody> updateBookLoanRecord(@PathVariable Long id,
             @RequestBody BookLoanRecordDto.Request bookLoanRecordDto) {
         var response = bookLoanRecordService.updateBookLoanRecord(id, bookLoanRecordDto);
@@ -74,6 +84,7 @@ public class BookLoanRecordControllerImpl implements BookLoanRecordController {
     @Override
     @DeleteMapping("{id}")
     @PreAuthorize("hasAnyRole('LIBRARIAN','MANAGER')")
+    @Operation(summary = "Delete book loan record information")
     public ResponseEntity<ResponseBody> deleteBookLoanRecord(@PathVariable Long id) {
         bookLoanRecordService.deleteBookLoanRecord(id);
         return ResponseEntity
