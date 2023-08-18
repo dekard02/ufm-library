@@ -1,0 +1,53 @@
+version: '3'
+
+services:
+  db:
+    image: 'mysql:8.1.0-oracle'
+    container_name: db
+    ports:
+      - ${DATABASE_PORT}
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD}
+      MYSQL_DATABASE: ${DATABASE_NAME}
+    restart: always
+
+  redis:
+    image: redis:7.2.0
+    ports:
+      - ${REDIS_PORT}
+
+  app:
+    container_name: app
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile
+    ports:
+      - 80:${SERVER_PORT}
+    restart: always
+    links:
+      - db
+    volumes:
+      - ../public:/app/public
+    depends_on:
+      - redis
+      - db
+    environment:
+      SERVER_PORT: ${SERVER_PORT}
+
+      DATABASE_URL: ${DATABASE_URL}
+      DATABASE_PORT: ${DATABASE_PORT}
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+
+      SHOW_SQL: false
+
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+
+      JWT_SERCRET: ${JWT_SERCRET}
+      JWT_SHORT_EXPIRES: ${JWT_SHORT_EXPIRES}
+      JWT_LONG_EXPIRES: ${JWT_LONG_EXPIRES}
+
+      OPENAPI_APP_VERSION: ${OPENAPI_APP_VERSION}
+      OPENAPI_PRODUCTION_SERVER: ${OPENAPI_PRODUCTION_SERVER}
