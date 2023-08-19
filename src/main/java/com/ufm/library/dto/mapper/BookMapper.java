@@ -54,6 +54,10 @@ public interface BookMapper {
         return photos
                 .stream()
                 .map((photo) -> {
+                    if (photo.getDirectory().startsWith("http")) {
+                        return photo.getDirectory();
+                    }
+
                     var rootUrl = ServletUriComponentsBuilder
                             .fromCurrentContextPath()
                             .build()

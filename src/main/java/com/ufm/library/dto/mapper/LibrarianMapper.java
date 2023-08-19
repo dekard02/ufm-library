@@ -10,6 +10,7 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.ufm.library.constant.StorageContants;
 import com.ufm.library.dto.LibrarianDto;
 import com.ufm.library.entity.Librarian;
 import com.ufm.library.repository.RoleRepository;
@@ -40,6 +41,14 @@ public interface LibrarianMapper {
 
     @Named("photo")
     default String photo(Librarian librarian) {
+        if (librarian.getPhoto() == null) {
+            librarian.setPhoto(StorageContants.LIBRARIAN_DEFAULT_IMAGE);
+        }
+
+        if (librarian.getPhoto().startsWith("http")) {
+            return librarian.getPhoto();
+        }
+
         var rootUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
         return rootUrl + "/" + librarian.getPhoto();
     }

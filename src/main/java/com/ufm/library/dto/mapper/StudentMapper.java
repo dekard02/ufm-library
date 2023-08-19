@@ -7,6 +7,7 @@ import org.mapstruct.MappingConstants;
 import org.mapstruct.Named;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.ufm.library.constant.StorageContants;
 import com.ufm.library.dto.StudentDto;
 import com.ufm.library.entity.Student;
 
@@ -24,8 +25,16 @@ public interface StudentMapper {
     StudentDto.CommonField studentToStudentCommonFieldDto(Student student);
 
     @Named("photo")
-    default String photo(Student librarian) {
+    default String photo(Student student) {
+        if (student.getPhoto() == null) {
+            student.setPhoto(StorageContants.LIBRARIAN_DEFAULT_IMAGE);
+        }
+
+        if (student.getPhoto().startsWith("http")) {
+            return student.getPhoto();
+        }
+
         var rootUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
-        return rootUrl + "/" + librarian.getPhoto();
+        return rootUrl + "/" + student.getPhoto();
     }
 }
